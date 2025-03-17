@@ -1,5 +1,3 @@
-
-
 namespace MatchPointBackend.Models
 {
     public class UserDTO

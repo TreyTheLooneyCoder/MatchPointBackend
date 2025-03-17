@@ -1,6 +1,9 @@
+using System.Text;
 using MatchPointBackend.Context;
 using MatchPointBackend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +24,36 @@ builder.Services.AddCors(options => {
         .AllowAnyOrigin();
     });
 });
+
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+
+
+var secretKey = builder.Configuration["Jwt:Key"] ?? "teamMatchPointSecretRacket";
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuers = new[]
+        {
+            "http://localhost:5000"
+        },
+        ValidAudiences = new[]
+        {
+            "http://localhost:5000"
+        },
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)) // Secret key
+    };
+});
 
 
 var app = builder.Build();
@@ -37,6 +68,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

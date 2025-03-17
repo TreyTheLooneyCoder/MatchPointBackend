@@ -1,4 +1,3 @@
-
 namespace MatchPointBackend.Models
 {
     public class PasswordDTO
