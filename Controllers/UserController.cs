@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using MatchPointBackend.Models;
 using MatchPointBackend.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -16,15 +17,17 @@ namespace MatchPointBackend.Controllers
 
         [HttpPost]
         [Route("CreateUser")]
-        public bool CreateUser([FromBody]UserDTO newUser){
-            return _userServices.CreateUser(newUser);
+        public async Task<IActionResult> CreateUser([FromBody]UserDTO user) {
+            bool success = await _userServices.CreateUser(user);
+            //we want to return objects since this would be a api call
+            if(success) return Ok(new {Success = true});
+            return BadRequest(new {Success = false, Message = "Username already Exists"});
         }
 
         [HttpPost]
         [Route("Login")]
-        public IActionResult Login([FromBody]UserDTO user){
-            string stringToken = _userServices.Login(user);
-
+        public async Task<IActionResult> Login([FromBody]UserDTO user){
+            string stringToken = await _userServices.Login(user);
             if(stringToken != null){
                 return Ok(new { Token = stringToken });
             }else{

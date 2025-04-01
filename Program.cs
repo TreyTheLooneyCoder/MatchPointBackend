@@ -29,7 +29,9 @@ var connectionString = builder.Configuration.GetConnectionString("DatabaseConnec
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
 
-var secretKey = builder.Configuration["Jwt:Key"] ?? "teamMatchPointSecretRacket";
+var secretKey = builder.Configuration["JWT:Key"];
+var signingCredentials = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -51,7 +53,7 @@ builder.Services.AddAuthentication(options =>
         {
             "http://localhost:5000"
         },
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)) // Secret key
+        IssuerSigningKey = signingCredentials
     };
 });
 
