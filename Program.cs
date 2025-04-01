@@ -47,11 +47,11 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuers = new[]
         {
-            "http://localhost:5000"
+            "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/"
         },
         ValidAudiences = new[]
         {
-            "http://localhost:5000"
+            "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/"
         },
         IssuerSigningKey = signingCredentials
     };

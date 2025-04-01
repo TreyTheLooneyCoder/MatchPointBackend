@@ -85,8 +85,8 @@ namespace MatchPointBackend.Services
             var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokenOptions = new JwtSecurityToken(
-                issuer: "http://localhost:5000", //http://localhost:5000",
-                audience: "http://localhost:5000", //http://localhost:5000",
+                issuer: "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/", //http://localhost:5000",
+                audience: "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/", //http://localhost:5000",
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: signingCredentials
