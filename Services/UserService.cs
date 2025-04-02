@@ -22,23 +22,25 @@ namespace MatchPointBackend.Services
 
         public async Task<bool> CreateUser(UserDTO newUser)
         {
+
             if (await DoesUserEmailExist(newUser.Email)) return false;
+
             if (await DoesUsernameExist(newUser.Username)) return false;
 
             UserModel userToAdd = new();
-            userToAdd.Username = newUser.Username;
-            userToAdd.Email = newUser.Email;
-
+            
             PasswordDTO hashPassword = HashPassword(newUser.Password);
             userToAdd.Hash = hashPassword.Hash;
             userToAdd.Salt = hashPassword.Salt;
+            userToAdd.Username = newUser.Username;
+            userToAdd.Email = newUser.Email;
 
-            await _dataContext.Users.AddAsync(userToAdd);
+            await _dataContext.User.AddAsync(userToAdd);
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
-        private async Task<bool> DoesUsernameExist(string username) => await _dataContext.Users.SingleOrDefaultAsync(users => users.Username == username) != null;
-        private async Task<bool> DoesUserEmailExist(string email) => await _dataContext.Users.SingleOrDefaultAsync(users => users.Email == email) != null;
+        private async Task<bool> DoesUsernameExist(string username) => await _dataContext.User.SingleOrDefaultAsync(user => user.Username == username) != null;
+        private async Task<bool> DoesUserEmailExist(string email) => await _dataContext.User.SingleOrDefaultAsync(users => users.Email == email) != null;
 
 
         private static PasswordDTO HashPassword(string password)
@@ -72,12 +74,12 @@ namespace MatchPointBackend.Services
                 return result;
             }
 
-            if (VerifyPassword(user.Password, foundUser.Salt, foundUser.Hash)) return null;
+            if (!VerifyPassword(user.Password, foundUser.Salt, foundUser.Hash)) return null;
 
             return GenerateJWToken(new List<Claim>());
         }
 
-        private async Task<UserModel> GetUserByUsername(string userName) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == userName);
+        private async Task<UserModel> GetUserByUsername(string userName) => await _dataContext.User.SingleOrDefaultAsync(user => user.Username == userName);
 
         private string GenerateJWToken(List<Claim> claims)
         {
@@ -85,8 +87,8 @@ namespace MatchPointBackend.Services
             var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokenOptions = new JwtSecurityToken(
-                issuer: "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/", //http://localhost:5000",
-                audience: "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/", //http://localhost:5000",
+                issuer: "https://matchpointbe-a7ahdsdjeyf4efgt.westus-01.azurewebsites.net/", 
+                audience: "https://matchpointbe-a7ahdsdjeyf4efgt.westus-01.azurewebsites.net/",
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: signingCredentials
@@ -110,7 +112,7 @@ namespace MatchPointBackend.Services
 
         public async Task<UserInfoDTO> GetUserInfoByUsername(string username)
         {
-            var currentUser = await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
+            var currentUser = await _dataContext.User.SingleOrDefaultAsync(user => user.Username == username);
 
             UserInfoDTO user = new();
 

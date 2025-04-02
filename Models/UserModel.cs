@@ -8,6 +8,5 @@ namespace MatchPointBackend.Models
         public string? Salt {get; set;}
         public string? Hash {get; set;}
 
-        // public List<CommentModelArr> CommentArr {get; set;}
     }
 }

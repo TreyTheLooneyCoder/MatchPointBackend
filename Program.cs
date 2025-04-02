@@ -16,18 +16,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UserService>();
 
+
+var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", 
-    policy =>{
+    policy => {
         policy.AllowAnyHeader()
         .AllowAnyMethod()
         .AllowAnyOrigin();
     });
 });
-
-var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
-
 
 var secretKey = builder.Configuration["JWT:Key"];
 var signingCredentials = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -45,8 +45,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/",
-        ValidAudience = "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/",
+        ValidIssuer = "https://matchpointbe-a7ahdsdjeyf4efgt.westus-01.azurewebsites.net/",
+        ValidAudience = "https://matchpointbe-a7ahdsdjeyf4efgt.westus-01.azurewebsites.net/",
         IssuerSigningKey = signingCredentials
     };
 });
