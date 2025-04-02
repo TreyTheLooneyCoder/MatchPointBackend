@@ -50,7 +50,7 @@ namespace MatchPointBackend.Controllers
         [HttpGet]
         [Route("GetUserInfoByEmail/${email}")]
         public async Task<IActionResult> GetUserInfoByEmail(string email){
-            UserInfoDTO users = await _userServices.GetUserInfoByUsername(email);
+            UserInfoDTO users = await _userServices.GetUserInfoByEmail(email);
             if(users != null){
                 return Ok(users);
             }else{
