@@ -9,6 +9,6 @@ namespace MatchPointBackend.Context
 
         }
 
-        public DbSet<UserModel> User {get; set;} 
+        public DbSet<UserModel> Users {get; set;} 
     }
 }

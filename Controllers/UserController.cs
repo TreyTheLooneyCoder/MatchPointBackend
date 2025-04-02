@@ -35,11 +35,28 @@ namespace MatchPointBackend.Controllers
             }
         }
         
-        [Authorize]
         [HttpGet]
-        [Route("AuthenticUser")]
-        public string AuthenticUserCheck(){
-            return "You are logged in and allowed to be here. Yay!!";
+        [Route("GetUserInfoByUsername/${username}")]
+        public async Task<IActionResult> GetUserInfoByUsername(string username){
+            UserInfoDTO users = await _userServices.GetUserInfoByUsername(username);
+            if(users != null){
+                return Ok(users);
+            }else{
+                return Unauthorized(new { message = "Failed to get user."});
+            }
+            
+        }
+
+        [HttpGet]
+        [Route("GetUserInfoByEmail/${email}")]
+        public async Task<IActionResult> GetUserInfoByEmail(string email){
+            UserInfoDTO users = await _userServices.GetUserInfoByUsername(email);
+            if(users != null){
+                return Ok(users);
+            }else{
+                return Unauthorized(new { message = "Failed to get user."});
+            }
+            
         }
 
     }
