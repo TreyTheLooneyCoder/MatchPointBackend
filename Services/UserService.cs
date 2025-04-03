@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 using System.Text;
 using MatchPointBackend.Context;
 using MatchPointBackend.Models;
+using MatchPointBackend.Models.DTOs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -134,23 +136,23 @@ namespace MatchPointBackend.Services
             return user;
         }
 
-        public async Task<bool> EditUsernameAsync(string username, string newUsername){
-            UserModel foundUser = await GetUserByUsername(username);
+        public async Task<bool> EditUsernameAsync(UserUsernameChangeDTO user){
+            UserModel foundUser = await GetUserByUsername(user.Username);
 
             if(foundUser == null) return false;
 
-            foundUser.Username = newUsername;
+            foundUser.Username = user.NewUsername;
             
             _dataContext.Users.Update(foundUser);
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
-        public async Task<bool> EditPasswordAsync(string username, string newPassword){
-            UserModel foundUser = await GetUserByUsername(username);
+        public async Task<bool> EditPasswordAsync(UserLoginDTO user){
+            UserModel foundUser = await GetUserByUsername(user.Username);
 
             if(foundUser == null) return false;
 
-            PasswordDTO hashPassword = HashPassword(newPassword);
+            PasswordDTO hashPassword = HashPassword(user.Password);
             foundUser.Hash = hashPassword.Hash;
             foundUser.Salt = hashPassword.Salt;
 

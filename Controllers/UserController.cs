@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using MatchPointBackend.Models;
+using MatchPointBackend.Models.DTOs;
 using MatchPointBackend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 
 namespace MatchPointBackend.Controllers
 {
@@ -74,16 +76,16 @@ namespace MatchPointBackend.Controllers
         }
 
         [HttpPut("EditUsername")]
-        public async Task<IActionResult> EditUsername(string username, string Newusername)
+        public async Task<IActionResult> EditUsername([FromBody]UserUsernameChangeDTO user)
         {
-            bool success = await _userServices.EditUsernameAsync(username, Newusername);
+            bool success = await _userServices.EditUsernameAsync(user);
             if (success) return Ok(new { Success = true });
             return BadRequest(new { Message = "Blog was not edited." });
         }
 
         [HttpPut("EditPassword")]
-        public async Task<IActionResult> EditPassword(string username, string password){
-            bool success = await _userServices.EditPasswordAsync(username, password);
+        public async Task<IActionResult> EditPassword([FromBody] UserLoginDTO user){
+            bool success = await _userServices.EditPasswordAsync(user);
             if(success) return Ok(new{Success = true});
             return BadRequest(new{Message = "Blog was not edited."});
         }
