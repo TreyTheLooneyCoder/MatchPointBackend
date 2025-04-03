@@ -26,7 +26,7 @@ namespace MatchPointBackend.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login([FromBody]UserDTO user){
+        public async Task<IActionResult> Login([FromBody]LoginDTO user){
             string stringToken = await _userServices.Login(user);
             if(stringToken != null){
                 return Ok(new { Token = stringToken });
