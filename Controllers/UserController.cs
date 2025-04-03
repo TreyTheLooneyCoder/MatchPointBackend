@@ -75,17 +75,9 @@ namespace MatchPointBackend.Controllers
 
         }
 
-        [HttpPut("EditUsername")]
-        public async Task<IActionResult> EditUsername([FromBody]UserUsernameChangeDTO user)
-        {
-            bool success = await _userServices.EditUsernameAsync(user);
-            if (success) return Ok(new { Success = true });
-            return BadRequest(new { Message = "Blog was not edited." });
-        }
-
-        [HttpPut("EditPassword")]
-        public async Task<IActionResult> EditPassword([FromBody] UserLoginDTO user){
-            bool success = await _userServices.EditPasswordAsync(user);
+        [HttpPut("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] UserLoginDTO user){
+            bool success = await _userServices.ForgotPasswordAsync(user);
             if(success) return Ok(new{Success = true});
             return BadRequest(new{Message = "Blog was not edited."});
         }

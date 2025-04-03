@@ -136,21 +136,11 @@ namespace MatchPointBackend.Services
             return user;
         }
 
-        public async Task<bool> EditUsernameAsync(UserUsernameChangeDTO user){
+        public async Task<bool> ForgotPasswordAsync(UserLoginDTO user)
+        {
             UserModel foundUser = await GetUserByUsername(user.Username);
 
-            if(foundUser == null) return false;
-
-            foundUser.Username = user.NewUsername;
-            
-            _dataContext.Users.Update(foundUser);
-            return await _dataContext.SaveChangesAsync() != 0;
-        }
-
-        public async Task<bool> EditPasswordAsync(UserLoginDTO user){
-            UserModel foundUser = await GetUserByUsername(user.Username);
-
-            if(foundUser == null) return false;
+            if (foundUser == null) return false;
 
             PasswordDTO hashPassword = HashPassword(user.Password);
             foundUser.Hash = hashPassword.Hash;
