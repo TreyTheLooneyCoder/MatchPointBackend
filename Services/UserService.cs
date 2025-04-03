@@ -61,7 +61,7 @@ namespace MatchPointBackend.Services
             return hashedPassword;
         }
 
-        public async Task<string> Login(LoginDTO user)
+        public async Task<string> Login(UserLoginDTO user)
         {
             string result = null;
 
