@@ -123,7 +123,7 @@ namespace MatchPointBackend.Services
 
         public async Task<UserInfoDTO> GetUserInfoByEmail(string email)
         {
-            var currentUser = await _dataContext.Users.SingleOrDefaultAsync(user => user.Email == email);
+            UserModel currentUser = await _dataContext.Users.SingleOrDefaultAsync(user => user.Email == email);
 
             UserInfoDTO user = new();
 
@@ -132,6 +132,30 @@ namespace MatchPointBackend.Services
             user.Email = currentUser.Email;
 
             return user;
+        }
+
+        public async Task<bool> EditUsernameAsync(string username, string newUsername){
+            UserModel foundUser = await GetUserByUsername(username);
+
+            if(foundUser == null) return false;
+
+            foundUser.Username = newUsername;
+            
+            _dataContext.Users.Update(foundUser);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        public async Task<bool> EditPasswordAsync(string username, string newPassword){
+            UserModel foundUser = await GetUserByUsername(username);
+
+            if(foundUser == null) return false;
+
+            PasswordDTO hashPassword = HashPassword(newPassword);
+            foundUser.Hash = hashPassword.Hash;
+            foundUser.Salt = hashPassword.Salt;
+
+            _dataContext.Users.Update(foundUser);
+            return await _dataContext.SaveChangesAsync() != 0;
         }
 
     }
