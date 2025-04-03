@@ -61,7 +61,7 @@ namespace MatchPointBackend.Services
             return hashedPassword;
         }
 
-        public async Task<string> Login(UserDTO user)
+        public async Task<string> Login(UserLoginDTO user)
         {
             string result = null;
 
@@ -72,7 +72,7 @@ namespace MatchPointBackend.Services
                 return result;
             }
 
-            if (VerifyPassword(user.Password, foundUser.Salt, foundUser.Hash)) return null;
+            if (!VerifyPassword(user.Password, foundUser.Salt, foundUser.Hash)) return null;
 
             return GenerateJWToken(new List<Claim>());
         }

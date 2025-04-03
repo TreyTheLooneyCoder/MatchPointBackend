@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250402183918_Init")]
+    [Migration("20250403153410_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace MatchPointBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }
