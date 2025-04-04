@@ -15,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<LoggedInServices>();
 
 
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");

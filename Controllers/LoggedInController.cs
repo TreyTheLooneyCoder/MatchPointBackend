@@ -14,6 +14,7 @@ namespace MatchPointBackend.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
+
     public class LoggedInController : ControllerBase
     {
         private readonly LoggedInServices _loggedInServices;
