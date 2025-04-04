@@ -127,6 +127,8 @@ namespace MatchPointBackend.Services
         {
             UserModel currentUser = await _dataContext.Users.SingleOrDefaultAsync(user => user.Email == email);
 
+            if (currentUser == null) return null; 
+
             UserInfoDTO user = new();
 
             user.Id = currentUser.Id;
