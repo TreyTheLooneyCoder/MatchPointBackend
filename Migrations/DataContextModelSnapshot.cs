@@ -35,6 +35,9 @@ namespace MatchPointBackend.Migrations
                     b.Property<string>("Hash")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
 

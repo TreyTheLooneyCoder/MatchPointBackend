@@ -41,9 +41,9 @@ namespace MatchPointBackend.Controllers
         }
 
         [HttpDelete("DeleteProfile")]
-        public async Task<IActionResult> DeleteProfile([FromBody]UserModel user)
+        public async Task<IActionResult> DeleteProfile(string user)
         {
-            bool success = await _loggedInServices.DeleteProfile(user.isDeleted);
+            bool success = await _loggedInServices.DeleteProfile(user);
             if (success) return Ok(new { success = true });
             return BadRequest(new { Message = "Profile was not deleted" });
         }

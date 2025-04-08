@@ -17,19 +17,21 @@ namespace MatchPointBackend.Services
     public class LoggedInServices
     {
         private readonly DataContext _dataContext;
-        private readonly IConfiguration _config;
+        // private readonly IConfiguration _config;
 
         public LoggedInServices(DataContext dataContext, IConfiguration config)
         {
             _dataContext = dataContext;
-            _config = config;
+            // _config = config;
         }
 
         public async Task<bool> EditUsernameAsync(UserUsernameChangeDTO user)
         {
             UserModel foundUser = await GetUserByUsername(user.Username);
+            UserModel checkUsername = await GetUserByUsername(user.NewUsername);
 
             if (foundUser == null) return false;
+            if (checkUsername != null) return false;
 
             foundUser.Username = user.NewUsername;
 
@@ -70,48 +72,14 @@ namespace MatchPointBackend.Services
 
             return hashedPassword;
         }
-
-        private static bool VerifyPassword(string password, string salt, string hash)
-        {
-            byte[] saltBytes = Convert.FromBase64String(salt);
-
-            string newHash;
-            using (var deriveBytes = new Rfc2898DeriveBytes(password, saltBytes, 310000, HashAlgorithmName.SHA256))
-            {
-                newHash = Convert.ToBase64String(deriveBytes.GetBytes(32));
-            }
-
-            return hash == newHash;
-        }
-
         private async Task<UserModel> GetUserByUsername(string userName) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == userName);
-
-        private string GenerateJWToken(List<Claim> claims)
-        {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Key"]));
-            var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-            var tokenOptions = new JwtSecurityToken(
-                issuer: "https://matchpointbe-a7ahdsdjeyf4efgt.westus-01.azurewebsites.net/", //http://localhost:5000",
-                audience: "https://matchpointbe-a7ahdsdjeyf4efgt.westus-01.azurewebsites.net/", //http://localhost:5000",
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(60),
-                signingCredentials: signingCredentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-        }
 
         public async Task<bool> DeleteProfile(string user)
         {
             UserModel userToDelete = await GetUserByUsername(user);
-            if(userToDelete == null)
-            { 
-                return false;
-            }
-             
-            userToDelete.isDeleted = true;
+            if (userToDelete == null) return false;
 
+            userToDelete.IsDeleted = true;
             _dataContext.Users.Update(userToDelete);
 
             return await _dataContext.SaveChangesAsync() != 0;

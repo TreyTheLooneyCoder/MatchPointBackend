@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250403153410_Init")]
+    [Migration("20250408220200_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -37,6 +37,9 @@ namespace MatchPointBackend.Migrations
 
                     b.Property<string>("Hash")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
