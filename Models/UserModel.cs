@@ -7,6 +7,7 @@ namespace MatchPointBackend.Models
         public string? Username {get; set;}
         public string? Salt {get; set;}
         public string? Hash {get; set;}
+        
 
     }
 }

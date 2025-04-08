@@ -102,5 +102,21 @@ namespace MatchPointBackend.Services
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
+        public async Task<bool> DeleteProfile(string user)
+        {
+            UserModel userToDelete = await GetUserByUsername(user);
+            if(userToDelete == null)
+            { 
+                return false;
+            }
+             
+            userToDelete.isDeleted = true;
+
+            _dataContext.Users.Update(userToDelete);
+
+            return await _dataContext.SaveChangesAsync() != 0;
+
+        }
+
     }
 }

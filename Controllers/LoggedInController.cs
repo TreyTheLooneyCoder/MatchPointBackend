@@ -40,5 +40,13 @@ namespace MatchPointBackend.Controllers
             return BadRequest(new { Message = "Blog was not edited." });
         }
 
+        [HttpDelete("DeleteProfile")]
+        public async Task<IActionResult> DeleteProfile([FromBody]UserModel user)
+        {
+            bool success = await _loggedInServices.DeleteProfile(user.isDeleted);
+            if (success) return Ok(new { success = true });
+            return BadRequest(new { Message = "Profile was not deleted" });
+        }
+
     }
 }
