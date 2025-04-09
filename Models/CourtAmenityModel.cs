@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace MatchPointBackend.Models
 {
-    public class CourtConditionModel
+    public class CourtAmenityModel
     {
-        public int CourtConditionID {get; set;}
-        public ConditionModel[]? Conditions {get; set;}
+        public int AmenityID {get; set;}
+        public AmenityModel[]? Amenities {get; set;}
     }
 }
