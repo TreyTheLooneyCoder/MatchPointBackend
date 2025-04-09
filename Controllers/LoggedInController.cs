@@ -29,7 +29,7 @@ namespace MatchPointBackend.Controllers
         {
             bool success = await _loggedInServices.EditUsernameAsync(user);
             if (success) return Ok(new { Success = true });
-            return BadRequest(new { Message = "Blog was not edited." });
+            return BadRequest(new { Message = "Username already exist." });
         }
 
         [HttpPut("EditPassword")]
@@ -37,7 +37,7 @@ namespace MatchPointBackend.Controllers
         {
             bool success = await _loggedInServices.EditPasswordAsync(user);
             if (success) return Ok(new { Success = true });
-            return BadRequest(new { Message = "Blog was not edited." });
+            return BadRequest(new { Message = "Password change was unsuccessful." });
         }
 
         [HttpDelete("DeleteProfile")]
