@@ -74,6 +74,10 @@ namespace MatchPointBackend.Services
                 return result;
             }
 
+            if (foundUser.IsDeleted) {
+                return result;
+            }
+
             if (!VerifyPassword(user.Password, foundUser.Salt, foundUser.Hash)) return null;
 
             return GenerateJWToken(new List<Claim>());
