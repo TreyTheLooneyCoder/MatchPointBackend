@@ -86,5 +86,19 @@ namespace MatchPointBackend.Services
 
         }
 
+        private async Task<CourtModel> GetLocations(string courtName) => _dataContext.Locations.SingleOrDefault(location => location.CourtName == courtName);
+        public async Task<bool> AddLocation(CourtModel location)
+        {
+            CourtModel addedLocations = await GetLocations(location.CourtName);
+            CourtModel newLocations = await GetLocations(location.NewLocations.LocationName);
+            if (addedLocations == null) return false;
+            if (newLocations == addedLocations) return false;
+
+            addedLocations.CourtName = newLocations.NewLocations.LocationName;
+
+            _dataContext.Locations.Update(addedLocations);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
+
     }
 }

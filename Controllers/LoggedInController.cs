@@ -48,5 +48,12 @@ namespace MatchPointBackend.Controllers
             return BadRequest(new { Message = "Profile was not deleted" });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddLocation(CourtModel location)
+        {
+            bool success = await _loggedInServices.AddLocation(location);
+            if (success) return Ok(new { success = true });
+            return BadRequest(new { Message = "Location was not added" });
+        }
     }
 }
