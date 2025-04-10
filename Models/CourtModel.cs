@@ -16,7 +16,7 @@ namespace MatchPointBackend.Models
         public int latitude {get; set;}
         public int longitude {get; set;}
         public CommentModel Comments {get;set;}
-
+        public AddLocationModel NewLocations {get; set;}
 
     }
 }
