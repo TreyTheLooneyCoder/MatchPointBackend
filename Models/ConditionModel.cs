@@ -7,7 +7,7 @@ namespace MatchPointBackend.Models
 {
     public class ConditionModel
     {
-        public int ConditionID {get; set;}
+        public int Id {get; set;}
         public string? Condition {get; set;}
     }
 }

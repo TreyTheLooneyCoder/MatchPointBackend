@@ -7,7 +7,7 @@ namespace MatchPointBackend.Models
 {
     public class AddLocationModel
     {
-        public int LocationID {get; set;}
+        public int Id {get; set;}
         public string? LocationName {get; set;}
         public int Latitude {get; set;}
         public int Longitude {get; set;}

@@ -7,7 +7,7 @@ namespace MatchPointBackend.Models
 {
     public class AmenityModel
     {
-        public int AmenityID {get; set;}
+        public int Id {get; set;}
         public string? Amenity {get; set;}
     }
 }

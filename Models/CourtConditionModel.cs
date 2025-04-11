@@ -7,7 +7,7 @@ namespace MatchPointBackend.Models
 {
     public class CourtConditionModel
     {
-        public int CourtConditionID {get; set;}
+        public int Id {get; set;}
         public ConditionModel[]? Conditions {get; set;}
     }
 }
