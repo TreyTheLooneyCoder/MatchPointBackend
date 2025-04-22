@@ -18,7 +18,9 @@ namespace MatchPointBackend.Services
             _dataContext = dataContext;
         }   
 
-        public async Task<CourtInfoDTO> GetLocations(string courtName)
+        public async Task<List<CourtModel>> GetLocationsAsync() => await _dataContext.Locations.ToListAsync();
+
+        public async Task<CourtInfoDTO> EditLocations(string courtName)
         {
             var currentCourt = await _dataContext.Locations.SingleOrDefaultAsync(location => location.CourtName == courtName);
 

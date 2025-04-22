@@ -20,18 +20,12 @@ namespace MatchPointBackend.Controllers
             _locationServices = locationServices;
         }
 
-        [HttpGet("GetLocations")]
-        public async Task<IActionResult> GetLocations(string courtName)
+        [HttpGet("GetAllLocations")]
+        public async Task<IActionResult> GetAllLocations()
         {
-            CourtInfoDTO locations = await _locationServices.GetLocations(courtName);
-            if (locations != null)
-            {
-                return Ok(locations);
-            }
-            else
-            {
-                return Unauthorized(new { message = "Failed to get locations." });
-            }
+            var locations = await _locationServices.GetLocationsAsync();
+            if(locations != null)return Ok(locations);
+            return BadRequest(new {Message = "No Blogs"});
         }
 
         [HttpPost("AddNewLocation")]
