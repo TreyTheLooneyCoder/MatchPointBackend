@@ -12,11 +12,11 @@ namespace MatchPointBackend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LocationsController : ControllerBase
+    public class LocationController : ControllerBase
     {
         private readonly LocationServices _locationServices;
 
-        public LocationsController(LocationServices locationServices){
+        public LocationController(LocationServices locationServices){
             _locationServices = locationServices;
         }
 
