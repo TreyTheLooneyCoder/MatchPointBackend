@@ -85,12 +85,9 @@ namespace MatchPointBackend.Services
             return await _dataContext.SaveChangesAsync() != 0;
 
         }
-
-        private async Task<CourtModel> GetLocations(string courtName) => _dataContext.Locations.SingleOrDefault(location => location.CourtName == courtName);
         
         private async Task<bool> DoesLatitudeExist(int latitude) => await _dataContext.Locations.SingleOrDefaultAsync(location => location.Latitude == latitude) != null;
         private async Task<bool> DoesLongitudeExist(int longitude) => await _dataContext.Locations.SingleOrDefaultAsync(location => location.Longitude == longitude) != null;
-
         public async Task<bool> AddLocation(AddLocationDTO newLocation)
         {
             if (await DoesLatitudeExist(newLocation.Latitude)) return false;
