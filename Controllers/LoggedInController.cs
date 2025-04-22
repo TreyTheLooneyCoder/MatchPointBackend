@@ -49,7 +49,7 @@ namespace MatchPointBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddLocation(CourtModel location)
+        public async Task<IActionResult> AddLocation(AddLocationDTO location)
         {
             bool success = await _loggedInServices.AddLocation(location);
             if (success) return Ok(new { success = true });
