@@ -95,6 +95,9 @@ namespace MatchPointBackend.Services
             locationToAdd.CourtName = newLocation.CourtName;
             locationToAdd.Latitude = newLocation.Latitude;
             locationToAdd.Longitude = newLocation.Longitude;
+            locationToAdd.Conditions = newLocation.Conditions;
+            locationToAdd.Amenities = newLocation.Amenities;
+
 
             await _dataContext.Locations.AddAsync(locationToAdd);
             return await _dataContext.SaveChangesAsync() != 0;
