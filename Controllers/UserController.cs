@@ -82,7 +82,32 @@ namespace MatchPointBackend.Controllers
             return BadRequest(new{Message = "Blog was not edited."});
         }
 
-        
+        [HttpPut("EditUsername")]
+        [Authorize]
+        public async Task<IActionResult> EditUsername([FromBody]UserUsernameChangeDTO user)
+        {
+            bool success = await _userServices.EditUsernameAsync(user);
+            if (success) return Ok(new { Success = true });
+            return BadRequest(new { Message = "Username already exist." });
+        }
+
+        [HttpPut("EditPassword")]
+        [Authorize]
+        public async Task<IActionResult> EditPassword([FromBody]UserLoginDTO user)
+        {
+            bool success = await _userServices.EditPasswordAsync(user);
+            if (success) return Ok(new { Success = true });
+            return BadRequest(new { Message = "Password change was unsuccessful." });
+        }
+
+        [HttpDelete("DeleteProfile")]
+        [Authorize]
+        public async Task<IActionResult> DeleteProfile(string user)
+        {
+            bool success = await _userServices.DeleteProfile(user);
+            if (success) return Ok(new { success = true });
+            return BadRequest(new { Message = "Profile was not deleted" });
+        }
 
     }
 }

@@ -156,6 +156,65 @@ namespace MatchPointBackend.Services
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
+        public async Task<bool> EditUsernameAsync(UserUsernameChangeDTO user)
+        {
+            UserModel foundUser = await LoggedInGetUserByUsername(user.Username);
+            UserModel checkUsername = await LoggedInGetUserByUsername(user.NewUsername);
 
+            if (foundUser == null) return false;
+            if (checkUsername != null) return false;
+
+            foundUser.Username = user.NewUsername;
+
+            _dataContext.Users.Update(foundUser);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        public async Task<bool> EditPasswordAsync(UserLoginDTO user)
+        {
+            UserModel foundUser = await LoggedInGetUserByUsername(user.Username);
+
+            if (foundUser == null) return false;
+
+            PasswordDTO hashPassword = LoggedInHashPassword(user.Password);
+            foundUser.Hash = hashPassword.Hash;
+            foundUser.Salt = hashPassword.Salt;
+
+            _dataContext.Users.Update(foundUser);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+         private static PasswordDTO LoggedInHashPassword(string password)
+        {
+            byte[] saltBytes = RandomNumberGenerator.GetBytes(64);
+
+            string salt = Convert.ToBase64String(saltBytes);
+
+            string hash;
+
+            using (var deriveBytes = new Rfc2898DeriveBytes(password, saltBytes, 310000, HashAlgorithmName.SHA256))
+            {
+                hash = Convert.ToBase64String(deriveBytes.GetBytes(32));
+            }
+
+            PasswordDTO hashedPassword = new();
+            hashedPassword.Salt = salt;
+            hashedPassword.Hash = hash;
+
+            return hashedPassword;
+        }
+        private async Task<UserModel> LoggedInGetUserByUsername(string userName) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == userName);
+
+        public async Task<bool> DeleteProfile(string user)
+        {
+            UserModel userToDelete = await LoggedInGetUserByUsername(user);
+            if (userToDelete == null) return false;
+
+            userToDelete.IsDeleted = true;
+            _dataContext.Users.Update(userToDelete);
+
+            return await _dataContext.SaveChangesAsync() != 0;
+
+        }
     }
 }
