@@ -11,7 +11,7 @@ namespace MatchPointBackend.Models
         public string? LocationName {get; set;}
         public int Latitude {get; set;}
         public int Longitude {get; set;}
-        public List<CourtConditionModel> Conditions {get; set;}
-        public List<CourtAmenityModel> Amenities {get; set;}
+        public List<string>? Conditions {get; set;}
+        public List<string>? Amenities {get; set;}
     }
 }

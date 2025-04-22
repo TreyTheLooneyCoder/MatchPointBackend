@@ -87,16 +87,20 @@ namespace MatchPointBackend.Services
         }
 
         private async Task<CourtModel> GetLocations(string courtName) => _dataContext.Locations.SingleOrDefault(location => location.CourtName == courtName);
-        public async Task<bool> AddLocation(CourtModel location)
+        
+        private async Task<bool> DoesLatitudeExist(int latitude) => await _dataContext.Locations.SingleOrDefaultAsync(location => location.Latitude == latitude) != null;
+        private async Task<bool> DoesLongitudeExist(int longitude) => await _dataContext.Locations.SingleOrDefaultAsync(location => location.Longitude == longitude) != null;
+
+        public async Task<bool> AddLocation(AddLocationDTO newLocation)
         {
-            CourtModel addedLocations = await GetLocations(location.CourtName);
-            CourtModel newLocations = await GetLocations(location.NewLocations.LocationName);
-            if (addedLocations == null) return false;
-            if (newLocations == addedLocations) return false;
+            if (await DoesLatitudeExist(newLocation.Latitude)) return false;
+            if (await DoesLongitudeExist(newLocation.Longitude)) return false;
 
-            addedLocations.CourtName = newLocations.NewLocations.LocationName;
+            CourtModel locationToAdd = new();
+            locationToAdd.Latitude = newLocation.Latitude;
+            locationToAdd.Longitude = newLocation.Longitude;
 
-            _dataContext.Locations.Update(addedLocations);
+            await _dataContext.Locations.AddAsync(locationToAdd);
             return await _dataContext.SaveChangesAsync() != 0;
         }
 

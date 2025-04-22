@@ -11,10 +11,10 @@ namespace MatchPointBackend.Models
         public string? CourtName {get; set;} 
         public int CourtRating {get; set;} 
         public int SafetyRating {get; set;} 
-        public List<CourtConditionModel> Condition {get; set;}
-        public List<CourtAmenityModel> Amenities {get; set;}
+        public List<string>? Condition {get; set;}
+        public List<string>? Amenities {get; set;}
         public int Latitude {get; set;}
         public int Longitude {get; set;}
-        public List<CommentModel> Comments {get;set;}
+        public List<CommentModel>? Comments {get;set;}
     }
 }
