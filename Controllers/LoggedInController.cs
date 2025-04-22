@@ -48,7 +48,7 @@ namespace MatchPointBackend.Controllers
             return BadRequest(new { Message = "Profile was not deleted" });
         }
 
-        [HttpPost]
+        [HttpPost("AddNewLocation")]
         public async Task<IActionResult> AddLocation(AddLocationDTO location)
         {
             bool success = await _loggedInServices.AddLocation(location);
