@@ -25,7 +25,7 @@ namespace MatchPointBackend.Controllers
         {
             var locations = await _locationServices.GetLocationsAsync();
             if(locations != null)return Ok(locations);
-            return BadRequest(new {Message = "No Blogs"});
+            return BadRequest(new {Message = "No locations found."});
         }
 
         [HttpPost("AddNewLocation")]

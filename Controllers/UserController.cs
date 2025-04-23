@@ -79,7 +79,7 @@ namespace MatchPointBackend.Controllers
         public async Task<IActionResult> ForgotPassword([FromBody] UserLoginDTO user){
             bool success = await _userServices.ForgotPasswordAsync(user);
             if(success) return Ok(new{Success = true});
-            return BadRequest(new{Message = "Blog was not edited."});
+            return BadRequest(new{Message = "Password was not edited."});
         }
 
         [HttpPut("EditUsername")]
