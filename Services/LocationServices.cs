@@ -64,5 +64,31 @@ namespace MatchPointBackend.Services
 
             return location;
         }
+
+        public async Task<CourtModel> GetLocationByCoords(int latitude, int longitude)
+        {
+            var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Latitude == latitude && location.Longitude == longitude);
+
+            CourtModel location = new();
+
+            location.Latitude = currentLocation.Latitude;
+            location.Longitude = currentLocation.Longitude;
+            
+
+            return location;
+        }
+
+        public async Task<CourtModel> GetLocationByCourtname(string courtname)
+        {
+            var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.CourtName == courtname);
+
+            CourtModel location = new();
+
+            location.CourtName = currentLocation.CourtName;
+            location.Id = currentLocation.Id;
+            
+
+            return location;
+        }
     }
 }

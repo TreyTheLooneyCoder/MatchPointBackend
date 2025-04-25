@@ -51,5 +51,35 @@ namespace MatchPointBackend.Controllers
                 return Unauthorized(new { message = "Failed to get location." });
             }
         }
+
+        [HttpGet]
+        [Route("GetLocationInfoByCoords/{latitude}/{longitude}")]
+        public async Task<IActionResult> GetLocationByCoords(int latitude, int longitude)
+        {
+            CourtModel locations = await _locationServices.GetLocationByCoords(latitude, longitude);
+            if (locations != null)
+            {
+                return Ok(locations);
+            }
+            else
+            {
+                return Unauthorized(new { message = "Failed to get location." });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetLocationInfoByCourtname/{courtname}")]
+        public async Task<IActionResult> GetLocationByCourtname(string courtname)
+        {
+            CourtModel locations = await _locationServices.GetLocationByCourtname(courtname);
+            if (locations != null)
+            {
+                return Ok(locations);
+            }
+            else
+            {
+                return Unauthorized(new { message = "Failed to get location." });
+            }
+        }
     }
 }
