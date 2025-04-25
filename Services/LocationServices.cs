@@ -52,5 +52,17 @@ namespace MatchPointBackend.Services
             await _dataContext.Locations.AddAsync(locationToAdd);
             return await _dataContext.SaveChangesAsync() != 0;
         }
+
+        public async Task<CourtModel> GetLocationById(int Id)
+        {
+            var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Id == Id);
+
+            CourtModel location = new();
+
+            location.Id = currentLocation.Id;
+            
+
+            return location;
+        }
     }
 }

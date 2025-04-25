@@ -24,8 +24,8 @@ namespace MatchPointBackend.Controllers
         public async Task<IActionResult> GetAllLocations()
         {
             var locations = await _locationServices.GetLocationsAsync();
-            if(locations != null)return Ok(locations);
-            return BadRequest(new {Message = "No locations found."});
+            if(locations != null) return Ok(locations);
+            return BadRequest(new { Message = "No locations found." });
         }
 
         [HttpPost("AddNewLocation")]
@@ -35,6 +35,21 @@ namespace MatchPointBackend.Controllers
             bool success = await _locationServices.AddLocation(location);
             if (success) return Ok(new { success = true });
             return BadRequest(new { Message = "Location was not added" });
+        }
+
+        [HttpGet]
+        [Route("GetLocationInfoById/{Id}")]
+        public async Task<IActionResult> GetLocationById(int Id)
+        {
+            CourtModel locations = await _locationServices.GetLocationById(Id);
+            if (locations != null)
+            {
+                return Ok(locations);
+            }
+            else
+            {
+                return Unauthorized(new { message = "Failed to get location." });
+            }
         }
     }
 }
