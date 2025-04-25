@@ -56,13 +56,8 @@ namespace MatchPointBackend.Services
         public async Task<CourtModel> GetLocationById(int Id)
         {
             var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Id == Id);
-
-            CourtModel location = new();
-
-            location.Id = currentLocation.Id;
             
-
-            return location;
+            return currentLocation;
         }
 
         public async Task<CourtModel> GetLocationByCoords(int latitude, int longitude)
