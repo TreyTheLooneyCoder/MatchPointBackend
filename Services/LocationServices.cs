@@ -39,12 +39,17 @@ namespace MatchPointBackend.Services
         private async Task<bool> DoesLocationExist(float latitude, float longitude) => await _dataContext.Locations.SingleOrDefaultAsync(location => location.Latitude == latitude && location.Longitude == longitude) != null;
         public async Task<bool> AddLocation(AddLocationDTO newLocation)
         {
-            if (await DoesLocationExist(newLocation.Latitude, newLocation.Longitude)) return false;
+            bool latTryparse = float.TryParse(newLocation.Latitude, out float convertedLat);
+
+            bool lngTryparse = float.TryParse(newLocation.Longitude, out float convertedLng);
+
+            if (await DoesLocationExist(convertedLat, convertedLng)) return false;
             
+
             CourtModel locationToAdd = new();
             locationToAdd.CourtName = newLocation.CourtName;
-            locationToAdd.Latitude = newLocation.Latitude;
-            locationToAdd.Longitude = newLocation.Longitude;
+            locationToAdd.Latitude = convertedLat;
+            locationToAdd.Longitude = convertedLng;
             locationToAdd.Conditions = newLocation.Conditions;
             locationToAdd.Amenities = newLocation.Amenities;
 

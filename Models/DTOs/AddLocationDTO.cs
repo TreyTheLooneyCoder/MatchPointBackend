@@ -9,8 +9,8 @@ namespace MatchPointBackend.Models
     {
         public int Id {get; set;}
         public string? CourtName {get; set;}
-        public float Latitude {get; set;}
-        public float Longitude {get; set;}
+        public string Latitude {get; set;}
+        public string Longitude {get; set;}
         public List<string>? Conditions {get; set;}
         public List<string>? Amenities {get; set;}
     }
