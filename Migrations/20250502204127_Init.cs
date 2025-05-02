@@ -17,12 +17,12 @@ namespace MatchPointBackend.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourtName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CourtRating = table.Column<int>(type: "int", nullable: false),
-                    SafetyRating = table.Column<int>(type: "int", nullable: false),
+                    CourtRating = table.Column<float>(type: "real", nullable: false),
+                    SafetyRating = table.Column<float>(type: "real", nullable: false),
                     Conditions = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amenities = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Latitude = table.Column<int>(type: "int", nullable: false),
-                    Longitude = table.Column<int>(type: "int", nullable: false)
+                    Latitude = table.Column<float>(type: "real", nullable: false),
+                    Longitude = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {

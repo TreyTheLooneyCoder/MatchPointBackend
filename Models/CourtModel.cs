@@ -9,12 +9,12 @@ namespace MatchPointBackend.Models
     {
         public int Id {get; set;}
         public string? CourtName {get; set;} 
-        public int CourtRating {get; set;} 
-        public int SafetyRating {get; set;} 
+        public float CourtRating {get; set;} 
+        public float SafetyRating {get; set;} 
         public List<string>? Conditions {get; set;}
         public List<string>? Amenities {get; set;}
-        public int Latitude {get; set;}
-        public int Longitude {get; set;}
+        public float Latitude {get; set;}
+        public float Longitude {get; set;}
         public List<CommentModel>? Comments {get;set;}
     }
 }

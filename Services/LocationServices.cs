@@ -36,7 +36,7 @@ namespace MatchPointBackend.Services
             return location;
         }    
 
-        private async Task<bool> DoesLocationExist(int latitude, int longitude) => await _dataContext.Locations.SingleOrDefaultAsync(location => location.Latitude == latitude && location.Longitude == longitude) != null;
+        private async Task<bool> DoesLocationExist(float latitude, float longitude) => await _dataContext.Locations.SingleOrDefaultAsync(location => location.Latitude == latitude && location.Longitude == longitude) != null;
         public async Task<bool> AddLocation(AddLocationDTO newLocation)
         {
             if (await DoesLocationExist(newLocation.Latitude, newLocation.Longitude)) return false;
