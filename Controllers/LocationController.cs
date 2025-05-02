@@ -34,7 +34,7 @@ namespace MatchPointBackend.Controllers
         {
             bool success = await _locationServices.AddLocation(location);
             if (success) return Ok(new { success = true });
-            return BadRequest(new { Message = "Location was not added" });
+            return Unauthorized(new { Message = "Location was not added" });
         }
 
         [HttpGet]
