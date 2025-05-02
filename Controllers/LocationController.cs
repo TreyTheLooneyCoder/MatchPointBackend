@@ -53,10 +53,10 @@ namespace MatchPointBackend.Controllers
         }
 
         [HttpGet]
-        [Route("GetLocationInfoByCoords/{latitude}/{longitude}")]
-        public async Task<IActionResult> GetLocationByCoords(int latitude, int longitude)
+        [Route("GetLocationInfoByCoords")]
+        public async Task<IActionResult> GetLocationByCoords(FindLocationDTO coords)
         {
-            CourtModel locations = await _locationServices.GetLocationByCoords(latitude, longitude);
+            List<CourtModel> locations = await _locationServices.GetLocationByCoords(coords);
             if (locations != null)
             {
                 return Ok(locations);
