@@ -7,7 +7,7 @@ namespace MatchPointBackend.Models.DTOs
 {
     public class FindLocationDTO
     {
-        public float Lat {get; set;}
-        public float Lng {get; set;}
+        public string Lat {get; set;}
+        public string Lng {get; set;}
     }
 }
