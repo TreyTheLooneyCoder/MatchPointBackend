@@ -65,11 +65,11 @@ namespace MatchPointBackend.Services
             return currentLocation;
         }
 
-        public async Task<List<CourtModel>> GetLocationByCoords(FindLocationDTO coords)
+        public async Task<List<CourtModel>> GetLocationByCoords(string latitude, string longitude)
         {
-            bool latTryparse = float.TryParse(coords.Lat, out float convertedLat);
+            bool latTryparse = float.TryParse(latitude, out float convertedLat);
 
-            bool lngTryparse = float.TryParse(coords.Lng, out float convertedLng);
+            bool lngTryparse = float.TryParse(longitude, out float convertedLng);
 
             var currentLocation = await _dataContext.Locations.Where(location => (location.Latitude <= convertedLat + 0.1) && (location.Latitude >= convertedLat - 0.1) && (location.Longitude >= convertedLng + 0.1) && (location.Longitude >= convertedLng - 0.1)).ToListAsync();
             

@@ -48,22 +48,22 @@ namespace MatchPointBackend.Controllers
             }
             else
             {
-                return Unauthorized(new { message = "Failed to get location." });
+                return BadRequest(new { message = "Failed to get location." });
             }
         }
 
         [HttpGet]
-        [Route("GetLocationInfoByCoords/{coords}")]
-        public async Task<IActionResult> GetLocationByCoords(FindLocationDTO coords)
+        [Route("GetLocationInfoByCoords/{lat}/{lng}")]
+        public async Task<IActionResult> GetLocationByCoords(string lat, string lng)
         {
-            List<CourtModel> locations = await _locationServices.GetLocationByCoords(coords);
+            List<CourtModel> locations = await _locationServices.GetLocationByCoords(lat, lng);
             if (locations != null)
             {
                 return Ok(locations);
             }
             else
             {
-                return Unauthorized(new { message = "Failed to get location." });
+                return BadRequest(new { message = "Failed to get location." });
             }
         }
 
@@ -78,7 +78,7 @@ namespace MatchPointBackend.Controllers
             }
             else
             {
-                return Unauthorized(new { message = "Failed to get location." });
+                return BadRequest(new { message = "Failed to get location." });
             }
         }
     }
