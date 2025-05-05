@@ -56,7 +56,7 @@ namespace MatchPointBackend.Controllers
         [Route("GetLocationInfoByCoords/{lat}/{lng}")]
         public async Task<IActionResult> GetLocationByCoords(string lat, string lng)
         {
-            List<CourtModel> locations = await _locationServices.GetLocationByCoords(lat, lng);
+            string locations = await _locationServices.GetLocationByCoords(lat, lng);
             if (locations != null)
             {
                 return Ok(locations);
