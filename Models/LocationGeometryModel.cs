@@ -8,7 +8,8 @@ namespace MatchPointBackend.Models
     public class LocationGeometryModel
     {
         public int Id {get; set;}
-        public required List<CoodinatesModel> Coodinates {get; set;}
+        public int LocationId {get; set;}
+        public CoordinatesModel? Coodinates {get; set;}
         public required string Type {get; set;}
     }
 }

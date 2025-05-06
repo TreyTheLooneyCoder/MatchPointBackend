@@ -8,7 +8,8 @@ namespace MatchPointBackend.Models
     public class LocationPropertiesModel
     {
         public int Id {get; set;}
-        public required string CourtName {get; set;}
+        public int LocationId {get; set;}
+        public string? CourtName {get; set;}
         public float CourtRating {get; set;} 
         public float SafetyRating {get; set;} 
         public List<string>? Conditions {get; set;}

@@ -36,25 +36,27 @@ namespace MatchPointBackend.Services
             return location;
         }    
 
-        private async Task<bool> DoesLocationExist(float latitude, float longitude) => await _dataContext.Locations.SingleOrDefaultAsync(location => location.Latitude == latitude && location.Longitude == longitude) != null;
+        private async Task<bool> DoesLocationExist(double latitude, double longitude) => await _dataContext.Coordinates.SingleOrDefaultAsync(location => location.Latitude == latitude && location.Longitude == longitude) != null;
         public async Task<bool> AddLocation(AddLocationDTO newLocation)
         {
-            bool latTryparse = float.TryParse(newLocation.Latitude, out float convertedLat);
+            bool latTryparse = double.TryParse(newLocation.Lat, out double convertedLat);
 
-            bool lngTryparse = float.TryParse(newLocation.Longitude, out float convertedLng);
+            bool lngTryparse = double.TryParse(newLocation.Lng, out double convertedLng);
 
             if (await DoesLocationExist(convertedLat, convertedLng)) return false;
             
+            LocationsModel locationToAdd = new(){
+                Type = "Feature"
+            };
+            locationToAdd.Properties.CourtName = newLocation.CourtName;
+            locationToAdd.Properties.Conditions = newLocation.Conditions;
+            locationToAdd.Properties.Amenities = newLocation.Amenities;
+            locationToAdd.Geometry.Coodinates.Latitude = convertedLat;
+            locationToAdd.Geometry.Coodinates.Longitude = convertedLat;
+            locationToAdd.Geometry.Type = "Point";
 
-            CourtModel locationToAdd = new();
-            locationToAdd.CourtName = newLocation.CourtName;
-            locationToAdd.Latitude = convertedLat;
-            locationToAdd.Longitude = convertedLng;
-            locationToAdd.Conditions = newLocation.Conditions;
-            locationToAdd.Amenities = newLocation.Amenities;
-
-
-            await _dataContext.Locations.AddAsync(locationToAdd);
+            
+            await _dataContext.LocationFeatures.AddAsync(locationToAdd);
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
