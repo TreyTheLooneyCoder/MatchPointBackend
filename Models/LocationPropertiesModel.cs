@@ -14,6 +14,6 @@ namespace MatchPointBackend.Models
         public float SafetyRating {get; set;} 
         public List<string>? Conditions {get; set;}
         public List<string>? Amenities {get; set;}
-        public List<CommentModel>? Comments {get;set;}
+        public ICollection<CommentModel>? Comments {get;set;}
     }
 }

@@ -9,6 +9,6 @@ namespace MatchPointBackend.Models
     {
         public int Id {get; set;}
         public required string Type {get; set;}
-        public List<LocationsModel>? Features {get; set;}
+        public ICollection<LocationsModel>? Features {get; set;}
     }
 }
