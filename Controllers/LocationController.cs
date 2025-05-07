@@ -80,6 +80,6 @@ namespace MatchPointBackend.Controllers
             {
                 return Unauthorized(new { message = "Failed to get location." });
             }
-        }
+        }        
     }
 }
