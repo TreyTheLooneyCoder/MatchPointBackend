@@ -18,20 +18,20 @@ namespace MatchPointBackend.Services
             _dataContext = dataContext;
         }   
 
-        public async Task<List<CourtModel>> GetLocationsAsync() => await _dataContext.Locations.ToListAsync();
+        public async Task<List<LocationsModel>> GetLocationsAsync() => await _dataContext.Locations.ToListAsync();
 
         public async Task<CourtInfoDTO> EditLocations(string courtName)
         {
-            var currentCourt = await _dataContext.Locations.SingleOrDefaultAsync(location => location.CourtName == courtName);
+            var currentCourt = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Properties.CourtName == courtName);
 
             CourtInfoDTO location = new();
 
-            location.Id = currentCourt.Id;
-            location.Courtname = currentCourt.CourtName;
-            location.CourtRating = currentCourt.CourtRating;
-            location.SafetyRating = currentCourt.SafetyRating;
-            location.Conditions = currentCourt.Conditions;
-            location.Amenities = currentCourt.Amenities;
+            // location.Id = currentCourt.Id;
+            // location.Courtname = currentCourt.CourtName;
+            // location.CourtRating = currentCourt.CourtRating;
+            // location.SafetyRating = currentCourt.SafetyRating;
+            // location.Conditions = currentCourt.Conditions;
+            // location.Amenities = currentCourt.Amenities;
 
             return location;
         }    
@@ -44,23 +44,33 @@ namespace MatchPointBackend.Services
             bool lngTryparse = double.TryParse(newLocation.Lng, out double convertedLng);
 
             if (await DoesLocationExist(convertedLat, convertedLng)) return false;
-            
-            LocationsModel locationToAdd = new(){
-                Type = "Feature"
-            };
-            locationToAdd.Properties.CourtName = newLocation.CourtName;
-            locationToAdd.Properties.Conditions = newLocation.Conditions;
-            locationToAdd.Properties.Amenities = newLocation.Amenities;
-            locationToAdd.Geometry.Coodinates.Latitude = convertedLat;
-            locationToAdd.Geometry.Coodinates.Longitude = convertedLat;
-            locationToAdd.Geometry.Type = "Point";
+
+            LocationsModel locationToAdd = new();
+
+            CoordinatesModel newCoords = new();
+            newCoords.Latitude = convertedLat;
+            newCoords.Latitude = convertedLng;
+
+            LocationGeometryModel newGeometry = new();
+            newGeometry.LocationId = locationToAdd.Id;
+            newGeometry.Type = "Point";
+
+            LocationPropertiesModel newPropeties = new();
+            newPropeties.LocationId = locationToAdd.Id;
+            newPropeties.CourtName = newLocation.CourtName;
+            newPropeties.Conditions = newLocation.Conditions;
+            newPropeties.Amenities = newLocation.Amenities;
+
+            locationToAdd.Type = "Feature";
+            locationToAdd.Properties = newPropeties;
+            locationToAdd.Geometry = newGeometry;
 
             
-            await _dataContext.LocationFeatures.AddAsync(locationToAdd);
+            await _dataContext.Locations.AddAsync(locationToAdd);
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
-        public async Task<CourtModel> GetLocationById(int Id)
+        public async Task<LocationsModel> GetLocationById(int Id)
         {
             var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Id == Id);
             
@@ -80,9 +90,9 @@ namespace MatchPointBackend.Services
             return currentLocation;
         }
 
-        public async Task<CourtModel> GetLocationByCourtname(string courtname)
+        public async Task<LocationsModel> GetLocationByCourtname(string courtname)
         {
-            var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.CourtName == courtname);
+            var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Properties.CourtName == courtname);
             
             return currentLocation;
         }

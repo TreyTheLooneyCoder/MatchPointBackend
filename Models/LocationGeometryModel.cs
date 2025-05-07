@@ -10,6 +10,6 @@ namespace MatchPointBackend.Models
         public int Id {get; set;}
         public int LocationId {get; set;}
         public CoordinatesModel? Coodinates {get; set;}
-        public required string Type {get; set;}
+        public string? Type {get; set;}
     }
 }

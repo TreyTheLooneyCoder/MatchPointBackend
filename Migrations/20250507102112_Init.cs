@@ -57,25 +57,6 @@ namespace MatchPointBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Locations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CourtName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CourtRating = table.Column<float>(type: "real", nullable: false),
-                    SafetyRating = table.Column<float>(type: "real", nullable: false),
-                    Conditions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Amenities = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Latitude = table.Column<float>(type: "real", nullable: false),
-                    Longitude = table.Column<float>(type: "real", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -100,7 +81,7 @@ namespace MatchPointBackend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LocationId = table.Column<int>(type: "int", nullable: false),
                     CoodinatesId = table.Column<int>(type: "int", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,7 +102,6 @@ namespace MatchPointBackend.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CourtModelId = table.Column<int>(type: "int", nullable: true),
                     LocationPropertiesModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -132,49 +112,39 @@ namespace MatchPointBackend.Migrations
                         column: x => x.LocationPropertiesModelId,
                         principalTable: "LocationPropeties",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Comments_Locations_CourtModelId",
-                        column: x => x.CourtModelId,
-                        principalTable: "Locations",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "LocationFeatures",
+                name: "Locations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CollectionId = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PropertiesId = table.Column<int>(type: "int", nullable: true),
                     GeometryId = table.Column<int>(type: "int", nullable: true),
                     LocationCollectionModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LocationFeatures", x => x.Id);
+                    table.PrimaryKey("PK_Locations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LocationFeatures_LocationCollection_LocationCollectionModelId",
+                        name: "FK_Locations_LocationCollection_LocationCollectionModelId",
                         column: x => x.LocationCollectionModelId,
                         principalTable: "LocationCollection",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_LocationFeatures_LocationGeometry_GeometryId",
+                        name: "FK_Locations_LocationGeometry_GeometryId",
                         column: x => x.GeometryId,
                         principalTable: "LocationGeometry",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_LocationFeatures_LocationPropeties_PropertiesId",
+                        name: "FK_Locations_LocationPropeties_PropertiesId",
                         column: x => x.PropertiesId,
                         principalTable: "LocationPropeties",
                         principalColumn: "Id");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_CourtModelId",
-                table: "Comments",
-                column: "CourtModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_LocationPropertiesModelId",
@@ -182,24 +152,24 @@ namespace MatchPointBackend.Migrations
                 column: "LocationPropertiesModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LocationFeatures_GeometryId",
-                table: "LocationFeatures",
-                column: "GeometryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LocationFeatures_LocationCollectionModelId",
-                table: "LocationFeatures",
-                column: "LocationCollectionModelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LocationFeatures_PropertiesId",
-                table: "LocationFeatures",
-                column: "PropertiesId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LocationGeometry_CoodinatesId",
                 table: "LocationGeometry",
                 column: "CoodinatesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_GeometryId",
+                table: "Locations",
+                column: "GeometryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_LocationCollectionModelId",
+                table: "Locations",
+                column: "LocationCollectionModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_PropertiesId",
+                table: "Locations",
+                column: "PropertiesId");
         }
 
         /// <inheritdoc />
@@ -209,13 +179,10 @@ namespace MatchPointBackend.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "LocationFeatures");
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "LocationCollection");

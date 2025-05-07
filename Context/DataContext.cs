@@ -10,9 +10,8 @@ namespace MatchPointBackend.Context
         }
 
         public DbSet<UserModel> Users {get; set;}
-        public DbSet<CourtModel> Locations {get; set;}
         public DbSet<LocationCollectionModel> LocationCollection {get; set;}
-        public DbSet<LocationsModel> LocationFeatures {get; set;}
+        public DbSet<LocationsModel> Locations {get; set;}
         public DbSet<LocationPropertiesModel> LocationPropeties {get; set;}
         public DbSet<LocationGeometryModel> LocationGeometry {get; set;}
         public DbSet<CoordinatesModel> Coordinates {get; set;}
