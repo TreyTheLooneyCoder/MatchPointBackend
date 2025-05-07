@@ -36,27 +36,27 @@ namespace MatchPointBackend.Services
             return location;
         }    
 
-        private async Task<bool> DoesLocationExist(double latitude, double longitude) => await _dataContext.Coordinates.SingleOrDefaultAsync(location => location.Latitude == latitude && location.Longitude == longitude) != null;
+        private async Task<bool> DoesLocationExist(List<double> Coords) => await _dataContext.LocationGeometry.SingleOrDefaultAsync(location => location.Coodinates == Coords) != null;
         private async Task<bool> DoesCollectionExist(int id) => await _dataContext.LocationCollection.SingleOrDefaultAsync(location => location.Id == id) != null;
         public async Task<bool> AddLocation(AddLocationDTO newLocation)
         {
-            bool latTryparse = double.TryParse(newLocation.Lat, out double convertedLat);
+            // bool latTryparse = double.TryParse(newLocation.Lat, out double convertedLat);
 
-            bool lngTryparse = double.TryParse(newLocation.Lng, out double convertedLng);
+            // bool lngTryparse = double.TryParse(newLocation.Lng, out double convertedLng);
 
-            if (await DoesLocationExist(convertedLat, convertedLng)) return false;
+            if (await DoesLocationExist(newLocation.Coordinates)) return false;
 
 
             LocationsModel locationToAdd = new();
 
-            CoordinatesModel newCoords = new();
-            newCoords.Latitude = convertedLat;
-            newCoords.Longitude = convertedLng;
+            // CoordinatesModel newCoords = new();
+            // newCoords.Latitude = convertedLat;
+            // newCoords.Longitude = convertedLng;
 
             LocationGeometryModel newGeometry = new();
             newGeometry.LocationId = locationToAdd.Id;
             newGeometry.Type = "Point";
-            newGeometry.Coodinates = newCoords;
+            newGeometry.Coodinates = newLocation.Coordinates;
 
             LocationPropertiesModel newPropeties = new();
             newPropeties.LocationId = locationToAdd.Id;
@@ -98,15 +98,13 @@ namespace MatchPointBackend.Services
             if(!latTryparse || !lngTryParse) return null;
 
             var locationCollection = await _dataContext.Locations
-                // .Include(location => location.Features);
                 .Where(location => 
-                    location.Geometry.Coodinates.Latitude >= convertedLat - 0.1 && 
-                    location.Geometry.Coodinates.Latitude <= convertedLat + 0.1 &&
-                    location.Geometry.Coodinates.Longitude >= convertedLng - 0.1 &&
-                    location.Geometry.Coodinates.Longitude <= convertedLng + 0.1)
+                    location.Geometry.Coodinates[1] >= convertedLat - 0.1 && 
+                    location.Geometry.Coodinates[1] <= convertedLat + 0.1 &&
+                    location.Geometry.Coodinates[0] >= convertedLng - 0.1 &&
+                    location.Geometry.Coodinates[0] <= convertedLng + 0.1)
                 .Include(location => location.Geometry)
                 .Include(location => location.Properties)
-                .Include(location => location.Geometry.Coodinates)
                 .ToListAsync();
 
             // .Select(lc => new LocationCollectionModel
