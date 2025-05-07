@@ -9,8 +9,8 @@ namespace MatchPointBackend.Models.DTOs
     {
         public int Id {get; set;}
         public string? Courtname {get; set;}
-        public int CourtRating {get; set;} 
-        public int SafetyRating {get; set;}
+        public float CourtRating {get; set;} 
+        public float SafetyRating {get; set;}
         public List<string>? Conditions {get; set;}
         public List<string>? Amenities {get; set;}
     }

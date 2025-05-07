@@ -34,7 +34,7 @@ namespace MatchPointBackend.Controllers
         {
             bool success = await _locationServices.AddLocation(location);
             if (success) return Ok(new { success = true });
-            return BadRequest(new { Message = "Location was not added" });
+            return Unauthorized(new { Message = "Location was not added" });
         }
 
         [HttpGet]
@@ -48,22 +48,22 @@ namespace MatchPointBackend.Controllers
             }
             else
             {
-                return Unauthorized(new { message = "Failed to get location." });
+                return BadRequest(new { message = "Failed to get location." });
             }
         }
 
         [HttpGet]
-        [Route("GetLocationInfoByCoords/{latitude}/{longitude}")]
-        public async Task<IActionResult> GetLocationByCoords(int latitude, int longitude)
+        [Route("GetLocationInfoByCoords/{lat}/{lng}")]
+        public async Task<IActionResult> GetLocationByCoords(string lat, string lng)
         {
-            CourtModel locations = await _locationServices.GetLocationByCoords(latitude, longitude);
+            string locations = await _locationServices.GetLocationByCoords(lat, lng);
             if (locations != null)
             {
                 return Ok(locations);
             }
             else
             {
-                return Unauthorized(new { message = "Failed to get location." });
+                return BadRequest(new { message = "Failed to get location." });
             }
         }
 
@@ -78,7 +78,7 @@ namespace MatchPointBackend.Controllers
             }
             else
             {
-                return Unauthorized(new { message = "Failed to get location." });
+                return BadRequest(new { message = "Failed to get location." });
             }
         }        
     }

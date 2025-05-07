@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace MatchPointBackend.Models
 {
-    public class CommentModelArr
+    public class CoordinatesModel
     {
         public int Id {get; set;}
-        public int UserId {get; set;}
-        public string? Commentor {get; set;}
-        public string? Comment {get; set;}
+        public int GeometryId {get; set;}
+        public double Longitude {get; set;}
+        public double Latitude {get; set;}
     }
 }
