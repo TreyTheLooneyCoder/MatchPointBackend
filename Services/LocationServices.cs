@@ -49,11 +49,12 @@ namespace MatchPointBackend.Services
 
             CoordinatesModel newCoords = new();
             newCoords.Latitude = convertedLat;
-            newCoords.Latitude = convertedLng;
+            newCoords.Longitude = convertedLng;
 
             LocationGeometryModel newGeometry = new();
             newGeometry.LocationId = locationToAdd.Id;
             newGeometry.Type = "Point";
+            newGeometry.Coodinates = newCoords;
 
             LocationPropertiesModel newPropeties = new();
             newPropeties.LocationId = locationToAdd.Id;
@@ -77,16 +78,22 @@ namespace MatchPointBackend.Services
             return currentLocation;
         }
 
-        public async Task<string> GetLocationByCoords(string latitude, string longitude)
+        public async Task<List<LocationsModel>> GetLocationByCoords(string latitude, string longitude)
         {
-            // bool latTryparse = float.TryParse(latitude, out float convertedLat);
+            bool latTryparse = double.TryParse(latitude, out double convertedLat);
 
-            // bool lngTryparse = float.TryParse(longitude, out float convertedLng);
+            bool lngTryParse = double.TryParse(longitude, out double convertedLng);
 
-            // var currentLocation = await _dataContext.Locations.Where(location => (location.Latitude <= convertedLat + 0.1) && (location.Latitude >= convertedLat - 0.1) && (location.Longitude >= convertedLng + 0.1) && (location.Longitude >= convertedLng - 0.1)).ToListAsync();
+            if(!latTryparse || !lngTryParse) return null;
 
-            string currentLocation = latitude + longitude;
-            
+            var currentLocation = await _dataContext.Locations
+            .Where(location => 
+                location.Geometry.Coodinates.Latitude >= convertedLat - 0.1 && 
+                location.Geometry.Coodinates.Latitude <= convertedLat + 0.1 &&
+                location.Geometry.Coodinates.Longitude >= convertedLng - 0.1 &&
+                location.Geometry.Coodinates.Longitude <= convertedLng + 0.1)
+            .ToListAsync();
+
             return currentLocation;
         }
 
