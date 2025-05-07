@@ -41,7 +41,7 @@ namespace MatchPointBackend.Controllers
         [Route("GetLocationInfoById/{Id}")]
         public async Task<IActionResult> GetLocationById(int Id)
         {
-            CourtModel locations = await _locationServices.GetLocationById(Id);
+            LocationsModel locations = await _locationServices.GetLocationById(Id);
             if (locations != null)
             {
                 return Ok(locations);
@@ -56,7 +56,7 @@ namespace MatchPointBackend.Controllers
         [Route("GetLocationInfoByCoords/{lat}/{lng}")]
         public async Task<IActionResult> GetLocationByCoords(string lat, string lng)
         {
-            string locations = await _locationServices.GetLocationByCoords(lat, lng);
+            List<LocationsModel> locations = await _locationServices.GetLocationByCoords(lat, lng);
             if (locations != null)
             {
                 return Ok(locations);
@@ -71,7 +71,7 @@ namespace MatchPointBackend.Controllers
         [Route("GetLocationInfoByCourtname/{courtname}")]
         public async Task<IActionResult> GetLocationByCourtname(string courtname)
         {
-            CourtModel locations = await _locationServices.GetLocationByCourtname(courtname);
+            LocationsModel locations = await _locationServices.GetLocationByCourtname(courtname);
             if (locations != null)
             {
                 return Ok(locations);

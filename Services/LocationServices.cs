@@ -18,25 +18,26 @@ namespace MatchPointBackend.Services
             _dataContext = dataContext;
         }   
 
-        public async Task<List<CourtModel>> GetLocationsAsync() => await _dataContext.Locations.ToListAsync();
+        public async Task<List<LocationsModel>> GetLocationsAsync() => await _dataContext.Locations.ToListAsync();
 
         public async Task<CourtInfoDTO> EditLocations(string courtName)
         {
-            var currentCourt = await _dataContext.Locations.SingleOrDefaultAsync(location => location.CourtName == courtName);
+            var currentCourt = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Properties.CourtName == courtName);
 
             CourtInfoDTO location = new();
 
-            location.Id = currentCourt.Id;
-            location.Courtname = currentCourt.CourtName;
-            location.CourtRating = currentCourt.CourtRating;
-            location.SafetyRating = currentCourt.SafetyRating;
-            location.Conditions = currentCourt.Conditions;
-            location.Amenities = currentCourt.Amenities;
+            // location.Id = currentCourt.Id;
+            // location.Courtname = currentCourt.CourtName;
+            // location.CourtRating = currentCourt.CourtRating;
+            // location.SafetyRating = currentCourt.SafetyRating;
+            // location.Conditions = currentCourt.Conditions;
+            // location.Amenities = currentCourt.Amenities;
 
             return location;
         }    
 
         private async Task<bool> DoesLocationExist(double latitude, double longitude) => await _dataContext.Coordinates.SingleOrDefaultAsync(location => location.Latitude == latitude && location.Longitude == longitude) != null;
+        private async Task<bool> DoesCollectionExist(int id) => await _dataContext.LocationCollection.SingleOrDefaultAsync(location => location.Id == id) != null;
         public async Task<bool> AddLocation(AddLocationDTO newLocation)
         {
             bool latTryparse = double.TryParse(newLocation.Lat, out double convertedLat);
@@ -44,45 +45,90 @@ namespace MatchPointBackend.Services
             bool lngTryparse = double.TryParse(newLocation.Lng, out double convertedLng);
 
             if (await DoesLocationExist(convertedLat, convertedLng)) return false;
-            
-            LocationsModel locationToAdd = new(){
-                Type = "Feature"
-            };
-            locationToAdd.Properties.CourtName = newLocation.CourtName;
-            locationToAdd.Properties.Conditions = newLocation.Conditions;
-            locationToAdd.Properties.Amenities = newLocation.Amenities;
-            locationToAdd.Geometry.Coodinates.Latitude = convertedLat;
-            locationToAdd.Geometry.Coodinates.Longitude = convertedLat;
-            locationToAdd.Geometry.Type = "Point";
+
+
+            LocationsModel locationToAdd = new();
+
+            CoordinatesModel newCoords = new();
+            newCoords.Latitude = convertedLat;
+            newCoords.Longitude = convertedLng;
+
+            LocationGeometryModel newGeometry = new();
+            newGeometry.LocationId = locationToAdd.Id;
+            newGeometry.Type = "Point";
+            newGeometry.Coodinates = newCoords;
+
+            LocationPropertiesModel newPropeties = new();
+            newPropeties.LocationId = locationToAdd.Id;
+            newPropeties.CourtName = newLocation.CourtName;
+            newPropeties.Conditions = newLocation.Conditions;
+            newPropeties.Amenities = newLocation.Amenities;
+
+            locationToAdd.Type = "Feature";
+            locationToAdd.Properties = newPropeties;
+            locationToAdd.Geometry = newGeometry;
 
             
-            await _dataContext.LocationFeatures.AddAsync(locationToAdd);
+            await _dataContext.Locations.AddAsync(locationToAdd);
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
-        public async Task<CourtModel> GetLocationById(int Id)
+        private async Task<bool> CreateCollection()
+        {
+            if(await DoesCollectionExist(0) == false){
+                LocationCollectionModel newCollection = new();
+                return await _dataContext.SaveChangesAsync() == 0;
+            }
+            return true;
+        }
+
+        public async Task<LocationsModel> GetLocationById(int Id)
         {
             var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Id == Id);
             
             return currentLocation;
         }
 
-        public async Task<string> GetLocationByCoords(string latitude, string longitude)
+        public async Task<List<LocationsModel>> GetLocationByCoords(string latitude, string longitude)
         {
-            // bool latTryparse = float.TryParse(latitude, out float convertedLat);
+            bool latTryparse = double.TryParse(latitude, out double convertedLat);
 
-            // bool lngTryparse = float.TryParse(longitude, out float convertedLng);
+            bool lngTryParse = double.TryParse(longitude, out double convertedLng);
 
-            // var currentLocation = await _dataContext.Locations.Where(location => (location.Latitude <= convertedLat + 0.1) && (location.Latitude >= convertedLat - 0.1) && (location.Longitude >= convertedLng + 0.1) && (location.Longitude >= convertedLng - 0.1)).ToListAsync();
+            if(!latTryparse || !lngTryParse) return null;
 
-            string currentLocation = latitude + longitude;
+            var locationCollection = await _dataContext.Locations
+                // .Include(location => location.Features);
+                .Where(location => 
+                    location.Geometry.Coodinates.Latitude >= convertedLat - 0.1 && 
+                    location.Geometry.Coodinates.Latitude <= convertedLat + 0.1 &&
+                    location.Geometry.Coodinates.Longitude >= convertedLng - 0.1 &&
+                    location.Geometry.Coodinates.Longitude <= convertedLng + 0.1)
+                .Include(location => location.Geometry)
+                .Include(location => location.Properties)
+                .Include(location => location.Geometry.Coodinates)
+                .ToListAsync();
+
+            // .Select(lc => new LocationCollectionModel
+            //     {
+            //         Id = lc.Id,
+            //         Type = lc.Type,
+            //         Features = lc.Features
+            //             .Where(location => 
+            //                 location.Geometry.Coodinates.Latitude >= convertedLat - 0.1 && 
+            //                 location.Geometry.Coodinates.Latitude <= convertedLat + 0.1 &&
+            //                 location.Geometry.Coodinates.Longitude >= convertedLng - 0.1 &&
+            //                 location.Geometry.Coodinates.Longitude <= convertedLng + 0.1)
+            //             .ToList()
+            //     })
             
-            return currentLocation;
+
+            return locationCollection;
         }
 
-        public async Task<CourtModel> GetLocationByCourtname(string courtname)
+        public async Task<LocationsModel> GetLocationByCourtname(string courtname)
         {
-            var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.CourtName == courtname);
+            var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Properties.CourtName == courtname);
             
             return currentLocation;
         }
