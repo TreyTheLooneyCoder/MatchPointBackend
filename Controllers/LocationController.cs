@@ -80,6 +80,6 @@ namespace MatchPointBackend.Controllers
             {
                 return BadRequest(new { message = "Failed to get location." });
             }
-        }
+        }        
     }
 }
