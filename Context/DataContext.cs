@@ -14,7 +14,6 @@ namespace MatchPointBackend.Context
         public DbSet<LocationsModel> Locations {get; set;}
         public DbSet<LocationPropertiesModel> LocationPropeties {get; set;}
         public DbSet<LocationGeometryModel> LocationGeometry {get; set;}
-        public DbSet<CoordinatesModel> Coordinates {get; set;}
         public DbSet<CommentModel> Comments {get; set;}
 
     }

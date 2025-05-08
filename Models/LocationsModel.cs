@@ -9,7 +9,7 @@ namespace MatchPointBackend.Models
     {
         public int Id {get; set;}
         public int CollectionId {get; set;}
-        public string? Type {get; set;}
+        public string? Type {get; set;} = "Feature";
         public LocationPropertiesModel? Properties {get; set;}
         
         public LocationGeometryModel? Geometry {get; set;}

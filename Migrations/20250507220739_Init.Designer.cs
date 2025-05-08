@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250507104423_Init")]
+    [Migration("20250507220739_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -52,28 +52,6 @@ namespace MatchPointBackend.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("MatchPointBackend.Models.CoordinatesModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GeometryId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Coordinates");
-                });
-
             modelBuilder.Entity("MatchPointBackend.Models.LocationCollectionModel", b =>
                 {
                     b.Property<int>("Id")
@@ -83,7 +61,6 @@ namespace MatchPointBackend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -99,8 +76,8 @@ namespace MatchPointBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CoodinatesId")
-                        .HasColumnType("int");
+                    b.Property<string>("Coordinates")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
@@ -109,8 +86,6 @@ namespace MatchPointBackend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CoodinatesId");
 
                     b.ToTable("LocationGeometry");
                 });
@@ -213,15 +188,6 @@ namespace MatchPointBackend.Migrations
                     b.HasOne("MatchPointBackend.Models.LocationPropertiesModel", null)
                         .WithMany("Comments")
                         .HasForeignKey("LocationPropertiesModelId");
-                });
-
-            modelBuilder.Entity("MatchPointBackend.Models.LocationGeometryModel", b =>
-                {
-                    b.HasOne("MatchPointBackend.Models.CoordinatesModel", "Coodinates")
-                        .WithMany()
-                        .HasForeignKey("CoodinatesId");
-
-                    b.Navigation("Coodinates");
                 });
 
             modelBuilder.Entity("MatchPointBackend.Models.LocationsModel", b =>

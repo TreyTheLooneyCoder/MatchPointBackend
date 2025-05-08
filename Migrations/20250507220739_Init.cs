@@ -11,31 +11,31 @@ namespace MatchPointBackend.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Coordinates",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GeometryId = table.Column<int>(type: "int", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coordinates", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LocationCollection",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LocationCollection", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LocationGeometry",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    Coordinates = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LocationGeometry", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,26 +71,6 @@ namespace MatchPointBackend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LocationGeometry",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationId = table.Column<int>(type: "int", nullable: false),
-                    CoodinatesId = table.Column<int>(type: "int", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LocationGeometry", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_LocationGeometry_Coordinates_CoodinatesId",
-                        column: x => x.CoodinatesId,
-                        principalTable: "Coordinates",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -152,11 +132,6 @@ namespace MatchPointBackend.Migrations
                 column: "LocationPropertiesModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LocationGeometry_CoodinatesId",
-                table: "LocationGeometry",
-                column: "CoodinatesId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Locations_GeometryId",
                 table: "Locations",
                 column: "GeometryId");
@@ -192,9 +167,6 @@ namespace MatchPointBackend.Migrations
 
             migrationBuilder.DropTable(
                 name: "LocationPropeties");
-
-            migrationBuilder.DropTable(
-                name: "Coordinates");
         }
     }
 }
