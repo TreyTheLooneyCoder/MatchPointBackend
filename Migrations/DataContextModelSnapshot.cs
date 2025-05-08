@@ -73,7 +73,7 @@ namespace MatchPointBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Coodinates")
+                    b.Property<string>("Coordinates")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LocationId")

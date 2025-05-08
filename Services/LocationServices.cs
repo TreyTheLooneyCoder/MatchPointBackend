@@ -36,7 +36,7 @@ namespace MatchPointBackend.Services
             return location;
         }    
 
-        private async Task<bool> DoesLocationExist(List<double> Coords) => await _dataContext.LocationGeometry.SingleOrDefaultAsync(location => location.Coodinates == Coords) != null;
+        private async Task<bool> DoesLocationExist(List<double> Coords) => await _dataContext.LocationGeometry.SingleOrDefaultAsync(location => location.Coordinates == Coords) != null;
         private async Task<bool> DoesCollectionExist(int id) => await _dataContext.LocationCollection.SingleOrDefaultAsync(location => location.Id == id) != null;
         public async Task<bool> AddLocation(AddLocationDTO newLocation)
         {
@@ -56,7 +56,7 @@ namespace MatchPointBackend.Services
             LocationGeometryModel newGeometry = new();
             newGeometry.LocationId = locationToAdd.Id;
             newGeometry.Type = "Point";
-            newGeometry.Coodinates = newLocation.Coordinates;
+            newGeometry.Coordinates = newLocation.Coordinates;
 
             LocationPropertiesModel newPropeties = new();
             newPropeties.LocationId = locationToAdd.Id;
@@ -99,10 +99,10 @@ namespace MatchPointBackend.Services
 
             var locationCollection = await _dataContext.Locations
                 .Where(location => 
-                    location.Geometry.Coodinates[1] >= convertedLat - 0.1 && 
-                    location.Geometry.Coodinates[1] <= convertedLat + 0.1 &&
-                    location.Geometry.Coodinates[0] >= convertedLng - 0.1 &&
-                    location.Geometry.Coodinates[0] <= convertedLng + 0.1)
+                    location.Geometry.Coordinates[1] >= convertedLat - 0.01 && 
+                    location.Geometry.Coordinates[1] <= convertedLat + 0.01 &&
+                    location.Geometry.Coordinates[0] >= convertedLng - 0.01 &&
+                    location.Geometry.Coordinates[0] <= convertedLng + 0.01)
                 .Include(location => location.Geometry)
                 .Include(location => location.Properties)
                 .ToListAsync();

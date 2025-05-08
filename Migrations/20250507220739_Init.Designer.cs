@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250507203901_Init")]
+    [Migration("20250507220739_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -76,7 +76,7 @@ namespace MatchPointBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Coodinates")
+                    b.Property<string>("Coordinates")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LocationId")

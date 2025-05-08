@@ -9,7 +9,7 @@ namespace MatchPointBackend.Models
     {
         public int Id {get; set;}
         public int LocationId {get; set;}
-        public List<double>? Coodinates {get; set;}
+        public List<double>? Coordinates {get; set;}
         public string? Type {get; set;} = "Point";
     }
 }
