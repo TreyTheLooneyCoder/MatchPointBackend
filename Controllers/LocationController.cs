@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using MatchPointBackend.Models;
@@ -80,6 +81,63 @@ namespace MatchPointBackend.Controllers
             {
                 return BadRequest(new { message = "Failed to get location." });
             }
-        }        
+        }
+
+        [HttpGet]
+        [Route("GetCommentsByUser/(Commentor)")]
+        public async Task<IActionResult> GetCommentsByUser(string username)
+        {
+            CommentModel comments = await _locationServices.GetCommentsByUser(username);
+            if (comments != null)
+            {
+                return Ok(comments);
+            }
+            else
+            {
+                return BadRequest(new { message = "Failed to get comment." });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetCommentsByLocationId/(locationId)")]
+        public async Task<IActionResult> GetCommentsByLocationId(int Id)
+        {
+            CommentModel comments = await _locationServices.GetCommentsByLocationId(Id);
+            if (comments != null)
+            {
+                return Ok(comments);
+            }
+            else
+            {
+                return BadRequest(new { message = "Failed to get comment." });
+            }
+        }
+
+        [HttpPost("AddComment")]
+        [Authorize]
+        public async Task<IActionResult> AddComment(CommentInfoDTO comment)
+        {
+            bool success = await _locationServices.AddComment(comment);
+            if (success) return Ok(new { success = true });
+            return Unauthorized(new { Message = "Comment was not added" });
+        }
+
+        [HttpPut("EditComment")]
+        [Authorize]
+        public async Task<IActionResult> EditComment(EditCommentDTO comment)
+        {
+            bool success = await _locationServices.EditComment(comment);
+            if (success) return Ok(new { success = true });
+            return Unauthorized(new { Message = "Comment was not edited" });
+        }
+
+        [HttpDelete("DeleteComment")]
+        [Authorize]
+        public async Task<IActionResult> DeleteComment(EditCommentDTO Id)
+        {
+            bool success = await _locationServices.DeleteComment(Id);
+            if (success) return Ok(new { success = true });
+            return Unauthorized(new { Message = "Comment was not deleted" });
+        }
     }
 }

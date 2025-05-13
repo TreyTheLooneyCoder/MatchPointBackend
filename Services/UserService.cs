@@ -214,7 +214,6 @@ namespace MatchPointBackend.Services
             _dataContext.Users.Update(userToDelete);
 
             return await _dataContext.SaveChangesAsync() != 0;
-
         }
     }
 }

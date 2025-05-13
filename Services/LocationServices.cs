@@ -130,5 +130,61 @@ namespace MatchPointBackend.Services
             
             return currentLocation;
         }
+
+        private async Task<CommentModel> GetCommentsByCommentId(int Id) 
+        {
+            var currentComment = await _dataContext.Comments.SingleOrDefaultAsync(comment => comment.Id == Id);
+            
+            return currentComment;
+        }
+
+        public async Task<CommentModel> GetCommentsByUser(string username) 
+        {
+            var currentComment = await _dataContext.Comments.SingleOrDefaultAsync(comment => comment.Username == username);
+            
+            return currentComment;
+        }
+
+        public async Task<CommentModel> GetCommentsByLocationId(int location) 
+        {
+            var currentComment = await _dataContext.Comments.SingleOrDefaultAsync(comment => comment.LocationId == location);
+            
+            return currentComment;
+        }
+
+        public async Task<bool> AddComment(CommentInfoDTO commentToAdd)
+        {
+            CommentModel newComment = new();
+
+            newComment.Comment = commentToAdd.Comment;
+            newComment.Id = commentToAdd.Id;
+            newComment.Username = commentToAdd.Username;
+
+            await _dataContext.Comments.AddAsync(newComment);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        public async Task<bool> EditComment(EditCommentDTO comment)
+        {
+            CommentModel foundComment = await GetCommentsByCommentId(comment.CommentId);
+
+            if (foundComment == null) return false;
+
+            foundComment.Comment = comment.NewComment;
+
+            _dataContext.Comments.Update(foundComment);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        public async Task<bool> DeleteComment(EditCommentDTO Id)
+        {
+            CommentModel commentToDelete = await GetCommentsByCommentId(Id.CommentId);
+            if (commentToDelete == null) return false;
+            
+            commentToDelete.IsDeleted = true;
+            _dataContext.Comments.Update(commentToDelete);
+
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
     }
 }
