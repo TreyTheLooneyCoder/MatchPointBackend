@@ -69,6 +69,21 @@ namespace MatchPointBackend.Controllers
         }
 
         [HttpGet]
+        [Route("Get5miLocationInfoByCoords/{lat}/{lng}")]
+        public async Task<IActionResult> Get5miLocationByCoords(string lat, string lng)
+        {
+            List<LocationsModel> locations = await _locationServices.Get5miLocationByCoords(lat, lng);
+            if (locations != null)
+            {
+                return Ok(locations);
+            }
+            else
+            {
+                return BadRequest(new { message = "Failed to get location." });
+            }
+        }
+
+        [HttpGet]
         [Route("GetLocationInfoByCourtname/{courtname}")]
         public async Task<IActionResult> GetLocationByCourtname(string courtname)
         {

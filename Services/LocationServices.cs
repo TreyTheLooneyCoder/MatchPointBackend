@@ -106,21 +106,26 @@ namespace MatchPointBackend.Services
                 .Include(location => location.Geometry)
                 .Include(location => location.Properties)
                 .ToListAsync();
+            return locationCollection;
+        }
 
-            // .Select(lc => new LocationCollectionModel
-            //     {
-            //         Id = lc.Id,
-            //         Type = lc.Type,
-            //         Features = lc.Features
-            //             .Where(location => 
-            //                 location.Geometry.Coodinates.Latitude >= convertedLat - 0.1 && 
-            //                 location.Geometry.Coodinates.Latitude <= convertedLat + 0.1 &&
-            //                 location.Geometry.Coodinates.Longitude >= convertedLng - 0.1 &&
-            //                 location.Geometry.Coodinates.Longitude <= convertedLng + 0.1)
-            //             .ToList()
-            //     })
-            
+        public async Task<List<LocationsModel>> Get5miLocationByCoords(string latitude, string longitude)
+        {
+            bool latTryparse = double.TryParse(latitude, out double convertedLat);
 
+            bool lngTryParse = double.TryParse(longitude, out double convertedLng);
+
+            if(!latTryparse || !lngTryParse) return null;
+
+            var locationCollection = await _dataContext.Locations
+                .Where(location => 
+                    location.Geometry.Coordinates[1] >= convertedLat - 0.0723 && 
+                    location.Geometry.Coordinates[1] <= convertedLat + 0.0723 &&
+                    location.Geometry.Coordinates[0] >= convertedLng - 0.0723 &&
+                    location.Geometry.Coordinates[0] <= convertedLng + 0.0723)
+                .Include(location => location.Geometry)
+                .Include(location => location.Properties)
+                .ToListAsync();
             return locationCollection;
         }
 
