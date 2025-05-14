@@ -21,6 +21,8 @@ builder.Services.AddScoped<LocationServices>();
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
+builder.Services.AddSingleton<BlobServices>();
+
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", 
     policy => {
