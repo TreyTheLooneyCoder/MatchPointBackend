@@ -49,7 +49,10 @@ namespace MatchPointBackend.Migrations
                     CourtRating = table.Column<float>(type: "real", nullable: false),
                     SafetyRating = table.Column<float>(type: "real", nullable: false),
                     Conditions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Amenities = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Amenities = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Surface = table.Column<int>(type: "int", nullable: false),
+                    Images = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,9 +82,11 @@ namespace MatchPointBackend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     LocationPropertiesModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
