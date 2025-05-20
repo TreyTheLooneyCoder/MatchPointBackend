@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250520175315_Init")]
+    [Migration("20250520180733_Init")]
     partial class Init
     {
         /// <inheritdoc />
