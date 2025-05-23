@@ -48,8 +48,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "https://matchpointbe-a7ahdsdjeyf4efgt.westus-01.azurewebsites.net/",
-        ValidAudience = "https://matchpointbe-a7ahdsdjeyf4efgt.westus-01.azurewebsites.net/",
+        ValidIssuer = "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/",
+        ValidAudience = "https://matchpointbackend-c4btg3ekhea4gqcz.westus-01.azurewebsites.net/",
         IssuerSigningKey = signingCredentials
     };
 });
