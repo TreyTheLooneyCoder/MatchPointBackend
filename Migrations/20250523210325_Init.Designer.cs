@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250523171741_Init")]
+    [Migration("20250523210325_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -125,8 +125,8 @@ namespace MatchPointBackend.Migrations
                     b.Property<float>("SafetyRating")
                         .HasColumnType("real");
 
-                    b.Property<int>("Surface")
-                        .HasColumnType("int");
+                    b.Property<string>("Surface")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isDeleted")
                         .HasColumnType("bit");

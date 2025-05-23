@@ -122,8 +122,8 @@ namespace MatchPointBackend.Migrations
                     b.Property<float>("SafetyRating")
                         .HasColumnType("real");
 
-                    b.Property<int>("Surface")
-                        .HasColumnType("int");
+                    b.Property<string>("Surface")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isDeleted")
                         .HasColumnType("bit");

@@ -50,7 +50,7 @@ namespace MatchPointBackend.Migrations
                     SafetyRating = table.Column<float>(type: "real", nullable: false),
                     Conditions = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amenities = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Surface = table.Column<int>(type: "int", nullable: false),
+                    Surface = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Images = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
