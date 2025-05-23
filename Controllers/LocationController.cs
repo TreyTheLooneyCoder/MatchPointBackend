@@ -128,15 +128,17 @@ namespace MatchPointBackend.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("EditRating")]
-        [Authorize]
-        public async Task<IActionResult> EditRating(RatingDTO ratings)
-        {
-            bool success = await _locationServices.EditComment(ratings);
-            if (success) return Ok(new { success = true });
-            return Unauthorized(new { Message = "Comment was not edited" });
-        }
+        // No RatingDTO yet was making build fail when trying to drop
+
+        // [HttpPut]
+        // [Route("EditRating")]
+        // [Authorize]
+        // public async Task<IActionResult> EditRating(RatingDTO ratings)
+        // {
+        //     bool success = await _locationServices.EditComment(ratings);
+        //     if (success) return Ok(new { success = true });
+        //     return Unauthorized(new { Message = "Comment was not edited" });
+        // }
 
         [HttpPost("AddComment")]
         [Authorize]
