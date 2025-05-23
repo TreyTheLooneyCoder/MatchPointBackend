@@ -89,6 +89,13 @@ namespace MatchPointBackend.Services
             return currentLocation;
         }
 
+        public async Task<LocationPropertiesModel> GetLocationPropertiesByLocationId(int Id)
+        {
+            var currentLocation = await _dataContext.LocationPropeties.SingleOrDefaultAsync(properties => properties.LocationId == Id);
+
+            return currentLocation;
+        }
+
         public async Task<List<LocationsModel>> GetLocationByCoords(string latitude, string longitude)
         {
             bool latTryparse = double.TryParse(latitude, out double convertedLat);
@@ -136,10 +143,21 @@ namespace MatchPointBackend.Services
             return currentLocation;
         }
 
-        private async Task<CommentModel> GetCommentsByCommentId(int Id) 
+        public async Task<bool> EditRating(SafetyRatingDTO ratings)
+        {
+            LocationPropertiesModel locationToEdit = await GetLocationPropertiesByLocationId(ratings.LocationId);
+
+            if (locationToEdit == null) return false;
+            locationToEdit.CourtRating = ratings.SafetyRating;
+
+            _dataContext.LocationPropeties.Update(locationToEdit);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        private async Task<CommentModel> GetCommentsByCommentId(int Id)
         {
             var currentComment = await _dataContext.Comments.SingleOrDefaultAsync(comment => comment.Id == Id);
-            
+
             return currentComment;
         }
 
