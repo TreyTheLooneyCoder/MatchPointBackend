@@ -15,7 +15,7 @@ namespace MatchPointBackend.Models
         public List<string>? Conditions { get; set; }
         public List<string>? Amenities { get; set; }
         public ICollection<CommentModel>? Comments { get; set; }
-        public string Surface { get; set; }
+        public string? Surface { get; set; }
         public string[]? Images { get; set; }
         public bool isDeleted { get; set; }
     }

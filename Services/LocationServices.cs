@@ -63,6 +63,8 @@ namespace MatchPointBackend.Services
             newPropeties.CourtName = newLocation.CourtName;
             newPropeties.Conditions = newLocation.Conditions;
             newPropeties.Amenities = newLocation.Amenities;
+            newPropeties.isDeleted = false;
+            newPropeties.Surface = newLocation.Surface;
 
             locationToAdd.Type = "Feature";
             locationToAdd.Properties = newPropeties;
