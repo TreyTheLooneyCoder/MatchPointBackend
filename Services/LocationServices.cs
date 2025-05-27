@@ -163,6 +163,13 @@ namespace MatchPointBackend.Services
             return currentComment;
         }
 
+        private async Task<UserModel> GetUserByUserId(int Id)
+        {
+            var currentComment = await _dataContext.Users.SingleOrDefaultAsync(user => user.Id == Id);
+
+            return currentComment;
+        }
+
         public async Task<CommentModel> GetCommentsByUser(string username) 
         {
             var currentComment = await _dataContext.Comments.SingleOrDefaultAsync(comment => comment.Username == username);
@@ -179,10 +186,12 @@ namespace MatchPointBackend.Services
 
         public async Task<bool> AddComment(CommentInfoDTO commentToAdd)
         {
+            UserModel user = await GetUserByUserId(commentToAdd.UserId);
             CommentModel newComment = new();
 
             newComment.Comment = commentToAdd.Comment;
             newComment.UserId = commentToAdd.UserId;
+            newComment.Username = user.Username;
 
             await _dataContext.Comments.AddAsync(newComment);
             return await _dataContext.SaveChangesAsync() != 0;
