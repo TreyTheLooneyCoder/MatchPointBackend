@@ -10,8 +10,8 @@ namespace MatchPointBackend.Models
         public int Id { get; set; }
         public int LocationId { get; set; }
         public string? CourtName { get; set; }
-        public float CourtRating { get; set; }
-        public float SafetyRating { get; set; }
+        public ICollection<CourtRatingModel>? CourtRating { get; set; }
+        public ICollection<SafetyRatingModel>? SafetyRating { get; set; }
         public List<string>? Conditions { get; set; }
         public List<string>? Amenities { get; set; }
         public ICollection<CommentModel>? Comments { get; set; }

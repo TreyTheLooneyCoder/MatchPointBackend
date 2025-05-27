@@ -145,12 +145,34 @@ namespace MatchPointBackend.Services
             return currentLocation;
         }
 
-        public async Task<bool> EditRating(SafetyRatingDTO ratings)
+        public async Task<bool> AddSafetyRating(RatingDTO ratings)
         {
             LocationPropertiesModel locationToEdit = await GetLocationPropertiesByLocationId(ratings.LocationId);
+            SafetyRatingModel safetyRatingToEdit = new();
 
             if (locationToEdit == null) return false;
-            locationToEdit.CourtRating = ratings.SafetyRating;
+
+            safetyRatingToEdit.UserId = ratings.UserId;
+            safetyRatingToEdit.SafetyRating = ratings.Rating;
+
+            locationToEdit.SafetyRating.Add(safetyRatingToEdit);
+            
+            _dataContext.LocationPropeties.Update(locationToEdit);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
+        
+        public async Task<bool> AddCourtRating(RatingDTO ratings)
+        {
+            LocationPropertiesModel locationToEdit = await GetLocationPropertiesByLocationId(ratings.LocationId);
+            CourtRatingModel courtRatingToEdit = new();
+        
+            if (locationToEdit == null) return false;
+
+            courtRatingToEdit.UserId = ratings.UserId;
+            courtRatingToEdit.CourtRating = ratings.Rating;
+
+            locationToEdit.CourtRating.Add(courtRatingToEdit);
+            
 
             _dataContext.LocationPropeties.Update(locationToEdit);
             return await _dataContext.SaveChangesAsync() != 0;

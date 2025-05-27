@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MatchPointBackend.Models.DTOs
+namespace MatchPointBackend.Models
 {
-    public class SafetyRatingDTO
+    public class SafetyRatingModel
     {
-        public int LocationId { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
         public float SafetyRating { get; set; }
     }
 }

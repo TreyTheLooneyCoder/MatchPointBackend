@@ -130,15 +130,25 @@ namespace MatchPointBackend.Controllers
 
         // No RatingDTO yet was making build fail when trying to drop
 
-        // [HttpPut]
-        // [Route("EditRating")]
+        [HttpPost]
+        [Route("AddCourtRating")]
         // [Authorize]
-        // public async Task<IActionResult> EditRating(RatingDTO ratings)
-        // {
-        //     bool success = await _locationServices.EditComment(ratings);
-        //     if (success) return Ok(new { success = true });
-        //     return Unauthorized(new { Message = "Comment was not edited" });
-        // }
+        public async Task<IActionResult> AddCourtRating(RatingDTO ratings)
+        {
+            bool success = await _locationServices.AddCourtRating(ratings);
+            if (success) return Ok(new { success = true });
+            return Unauthorized(new { Message = "Rating was not added" });
+        }
+
+        [HttpPost]
+        [Route("AddSafetyRating")]
+        // [Authorize]
+        public async Task<IActionResult> AddSafetyRating(RatingDTO ratings)
+        {
+            bool success = await _locationServices.AddSafetyRating(ratings);
+            if (success) return Ok(new { success = true });
+            return Unauthorized(new { Message = "Rating was not added" });
+        }
 
         [HttpPost("AddComment")]
         [Authorize]
