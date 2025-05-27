@@ -99,7 +99,7 @@ namespace MatchPointBackend.Controllers
         }
 
         [HttpGet]
-        [Route("GetCommentsByUser/(Commentor)")]
+        [Route("GetCommentsByUser/{username}")]
         public async Task<IActionResult> GetCommentsByUser(string username)
         {
             CommentModel comments = await _locationServices.GetCommentsByUser(username);
@@ -114,10 +114,10 @@ namespace MatchPointBackend.Controllers
         }
 
         [HttpGet]
-        [Route("GetCommentsByLocationId/(locationId)")]
-        public async Task<IActionResult> GetCommentsByLocationId(int Id)
+        [Route("GetCommentsByLocationId/{locationId}")]
+        public async Task<IActionResult> GetCommentsByLocationId(int locationId)
         {
-            CommentModel comments = await _locationServices.GetCommentsByLocationId(Id);
+            CommentModel comments = await _locationServices.GetCommentsByLocationId(locationId);
             if (comments != null)
             {
                 return Ok(comments);
