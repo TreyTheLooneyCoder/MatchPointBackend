@@ -117,7 +117,7 @@ namespace MatchPointBackend.Controllers
         [Route("GetCommentsByLocationId/{locationId}")]
         public async Task<IActionResult> GetCommentsByLocationId(int locationId)
         {
-            CommentModel comments = await _locationServices.GetCommentsByLocationId(locationId);
+            List<CommentModel> comments = await _locationServices.GetCommentsByLocationId(locationId);
             if (comments != null)
             {
                 return Ok(comments);

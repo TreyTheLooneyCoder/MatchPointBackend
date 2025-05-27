@@ -177,9 +177,9 @@ namespace MatchPointBackend.Services
             return currentComment;
         }
 
-        public async Task<CommentModel> GetCommentsByLocationId(int location) 
+        public async Task<List<CommentModel>> GetCommentsByLocationId(int location) 
         {
-            var currentComment = await _dataContext.Comments.SingleOrDefaultAsync(comment => comment.LocationId == location);
+            var currentComment = await _dataContext.Comments.Where(comment => comment.LocationId == location).ToListAsync();
             
             return currentComment;
         }
