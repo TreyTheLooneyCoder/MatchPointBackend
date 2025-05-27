@@ -147,7 +147,7 @@ namespace MatchPointBackend.Controllers
         {
             bool success = await _locationServices.AddSafetyRating(ratings);
             if (success) return Ok(new { success = true });
-            return Unauthorized(new { Message = "Rating was not added" });
+            return BadRequest(new { Message = "Rating was not added" });
         }
 
         [HttpPost("AddComment")]

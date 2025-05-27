@@ -148,16 +148,22 @@ namespace MatchPointBackend.Services
         public async Task<bool> AddSafetyRating(RatingDTO ratings)
         {
             LocationPropertiesModel locationToEdit = await GetLocationPropertiesByLocationId(ratings.LocationId);
+
             SafetyRatingModel safetyRatingToEdit = new();
 
-            if (locationToEdit == null) return false;
+            if (locationToEdit == null)
+            {
+                Console.WriteLine("Location to edit is broken");
+                return false;
+            }
+            
 
             safetyRatingToEdit.UserId = ratings.UserId;
             safetyRatingToEdit.SafetyRating = ratings.Rating;
+            // safetyRatingToEdit.LocationPropertiesId = ratings.LocationId;
 
             locationToEdit.SafetyRating.Add(safetyRatingToEdit);
             
-            _dataContext.LocationPropeties.Update(locationToEdit);
             return await _dataContext.SaveChangesAsync() != 0;
         }
         
