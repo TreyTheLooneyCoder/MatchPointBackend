@@ -46,8 +46,6 @@ namespace MatchPointBackend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LocationId = table.Column<int>(type: "int", nullable: false),
                     CourtName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CourtRating = table.Column<float>(type: "real", nullable: false),
-                    SafetyRating = table.Column<float>(type: "real", nullable: false),
                     Conditions = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amenities = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Surface = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -100,6 +98,26 @@ namespace MatchPointBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CourtRatingModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CourtRating = table.Column<float>(type: "real", nullable: false),
+                    LocationPropertiesModelId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourtRatingModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourtRatingModel_LocationPropeties_LocationPropertiesModelId",
+                        column: x => x.LocationPropertiesModelId,
+                        principalTable: "LocationPropeties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -131,9 +149,34 @@ namespace MatchPointBackend.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SafetyRatingModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    SafetyRating = table.Column<float>(type: "real", nullable: false),
+                    LocationPropertiesModelId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SafetyRatingModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SafetyRatingModel_LocationPropeties_LocationPropertiesModelId",
+                        column: x => x.LocationPropertiesModelId,
+                        principalTable: "LocationPropeties",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_LocationPropertiesModelId",
                 table: "Comments",
+                column: "LocationPropertiesModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourtRatingModel_LocationPropertiesModelId",
+                table: "CourtRatingModel",
                 column: "LocationPropertiesModelId");
 
             migrationBuilder.CreateIndex(
@@ -150,6 +193,11 @@ namespace MatchPointBackend.Migrations
                 name: "IX_Locations_PropertiesId",
                 table: "Locations",
                 column: "PropertiesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SafetyRatingModel_LocationPropertiesModelId",
+                table: "SafetyRatingModel",
+                column: "LocationPropertiesModelId");
         }
 
         /// <inheritdoc />
@@ -159,7 +207,13 @@ namespace MatchPointBackend.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "CourtRatingModel");
+
+            migrationBuilder.DropTable(
                 name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "SafetyRatingModel");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250523210325_Init")]
+    [Migration("20250527213105_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -56,6 +56,30 @@ namespace MatchPointBackend.Migrations
                     b.HasIndex("LocationPropertiesModelId");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("MatchPointBackend.Models.CourtRatingModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("CourtRating")
+                        .HasColumnType("real");
+
+                    b.Property<int?>("LocationPropertiesModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationPropertiesModelId");
+
+                    b.ToTable("CourtRatingModel");
                 });
 
             modelBuilder.Entity("MatchPointBackend.Models.LocationCollectionModel", b =>
@@ -113,17 +137,11 @@ namespace MatchPointBackend.Migrations
                     b.Property<string>("CourtName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("CourtRating")
-                        .HasColumnType("real");
-
                     b.Property<string>("Images")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
-
-                    b.Property<float>("SafetyRating")
-                        .HasColumnType("real");
 
                     b.Property<string>("Surface")
                         .HasColumnType("nvarchar(max)");
@@ -170,6 +188,30 @@ namespace MatchPointBackend.Migrations
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("MatchPointBackend.Models.SafetyRatingModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("LocationPropertiesModelId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("SafetyRating")
+                        .HasColumnType("real");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationPropertiesModelId");
+
+                    b.ToTable("SafetyRatingModel");
+                });
+
             modelBuilder.Entity("MatchPointBackend.Models.UserModel", b =>
                 {
                     b.Property<int>("Id")
@@ -205,6 +247,13 @@ namespace MatchPointBackend.Migrations
                         .HasForeignKey("LocationPropertiesModelId");
                 });
 
+            modelBuilder.Entity("MatchPointBackend.Models.CourtRatingModel", b =>
+                {
+                    b.HasOne("MatchPointBackend.Models.LocationPropertiesModel", null)
+                        .WithMany("CourtRating")
+                        .HasForeignKey("LocationPropertiesModelId");
+                });
+
             modelBuilder.Entity("MatchPointBackend.Models.LocationsModel", b =>
                 {
                     b.HasOne("MatchPointBackend.Models.LocationGeometryModel", "Geometry")
@@ -224,6 +273,13 @@ namespace MatchPointBackend.Migrations
                     b.Navigation("Properties");
                 });
 
+            modelBuilder.Entity("MatchPointBackend.Models.SafetyRatingModel", b =>
+                {
+                    b.HasOne("MatchPointBackend.Models.LocationPropertiesModel", null)
+                        .WithMany("SafetyRating")
+                        .HasForeignKey("LocationPropertiesModelId");
+                });
+
             modelBuilder.Entity("MatchPointBackend.Models.LocationCollectionModel", b =>
                 {
                     b.Navigation("Features");
@@ -232,6 +288,10 @@ namespace MatchPointBackend.Migrations
             modelBuilder.Entity("MatchPointBackend.Models.LocationPropertiesModel", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("CourtRating");
+
+                    b.Navigation("SafetyRating");
                 });
 #pragma warning restore 612, 618
         }
