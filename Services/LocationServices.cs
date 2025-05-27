@@ -189,6 +189,7 @@ namespace MatchPointBackend.Services
             UserModel user = await GetUserByUserId(commentToAdd.UserId);
             CommentModel newComment = new();
 
+            newComment.LocationId = commentToAdd.LocationId;
             newComment.Comment = commentToAdd.Comment;
             newComment.UserId = commentToAdd.UserId;
             newComment.Username = user.Username;
