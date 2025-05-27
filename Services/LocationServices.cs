@@ -182,8 +182,7 @@ namespace MatchPointBackend.Services
             CommentModel newComment = new();
 
             newComment.Comment = commentToAdd.Comment;
-            newComment.Id = commentToAdd.Id;
-            newComment.Username = commentToAdd.Username;
+            newComment.UserId = commentToAdd.UserId;
 
             await _dataContext.Comments.AddAsync(newComment);
             return await _dataContext.SaveChangesAsync() != 0;
