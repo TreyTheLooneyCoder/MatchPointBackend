@@ -90,6 +90,9 @@ namespace MatchPointBackend.Services
             var currentLocation = await _dataContext.Locations
             .Include(location => location.Geometry)
             .Include(location => location.Properties)
+            .Include(location => location.Properties.CourtRating)
+            .Include(location => location.Properties.SafetyRating)
+            .Include(location => location.Properties.Comments)
             .SingleOrDefaultAsync(location => location.Id == Id);
 
             
@@ -116,13 +119,16 @@ namespace MatchPointBackend.Services
             if(!latTryparse || !lngTryParse) return null;
 
             var locationCollection = await _dataContext.Locations
-                .Where(location => 
-                    location.Geometry.Coordinates[1] >= convertedLat - 0.01 && 
+                .Where(location =>
+                    location.Geometry.Coordinates[1] >= convertedLat - 0.01 &&
                     location.Geometry.Coordinates[1] <= convertedLat + 0.01 &&
                     location.Geometry.Coordinates[0] >= convertedLng - 0.01 &&
                     location.Geometry.Coordinates[0] <= convertedLng + 0.01)
                 .Include(location => location.Geometry)
                 .Include(location => location.Properties)
+                .Include(location => location.Properties.CourtRating)
+                .Include(location => location.Properties.SafetyRating)
+                .Include(location => location.Properties.Comments)
                 .ToListAsync();
             return locationCollection;
         }
@@ -136,13 +142,16 @@ namespace MatchPointBackend.Services
             if(!latTryparse || !lngTryParse) return null;
 
             var locationCollection = await _dataContext.Locations
-                .Where(location => 
-                    location.Geometry.Coordinates[1] >= convertedLat - 0.0723 && 
+                .Where(location =>
+                    location.Geometry.Coordinates[1] >= convertedLat - 0.0723 &&
                     location.Geometry.Coordinates[1] <= convertedLat + 0.0723 &&
                     location.Geometry.Coordinates[0] >= convertedLng - 0.0723 &&
                     location.Geometry.Coordinates[0] <= convertedLng + 0.0723)
                 .Include(location => location.Geometry)
                 .Include(location => location.Properties)
+                .Include(location => location.Properties.CourtRating)
+                .Include(location => location.Properties.SafetyRating)
+                .Include(location => location.Properties.Comments)
                 .ToListAsync();
             return locationCollection;
         }
@@ -157,16 +166,15 @@ namespace MatchPointBackend.Services
         public async Task<bool> AddSafetyRating(RatingDTO ratings)
         {
             LocationPropertiesModel locationToEdit = await GetLocationPropertiesByLocationId(ratings.LocationId);
-
             SafetyRatingModel safetyRatingToEdit = new();
-
 
             if (locationToEdit == null) return false;
 
 
             safetyRatingToEdit.UserId = ratings.UserId;
             safetyRatingToEdit.SafetyRating = ratings.Rating;
-
+            safetyRatingToEdit.LocationPropertiesId = locationToEdit.Id;
+            safetyRatingToEdit.LocationId = ratings.LocationId;
 
             locationToEdit.SafetyRating.Add(safetyRatingToEdit);
             
@@ -178,16 +186,27 @@ namespace MatchPointBackend.Services
             LocationPropertiesModel locationToEdit = await GetLocationPropertiesByLocationId(ratings.LocationId);
             CourtRatingModel courtRatingToEdit = new();
         
-            if (locationToEdit == null) return false;
+            if(locationToEdit == null) return false;
 
             courtRatingToEdit.UserId = ratings.UserId;
             courtRatingToEdit.CourtRating = ratings.Rating;
+            courtRatingToEdit.LocationPropertiesId = locationToEdit.Id;
+            courtRatingToEdit.LocationId = ratings.LocationId;
 
             locationToEdit.CourtRating.Add(courtRatingToEdit);
             
 
             _dataContext.LocationProperties.Update(locationToEdit);
             return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        private async Task<bool> DoesUserSafetyRatingExist(int userId, int locationId)
+        {
+            var location = await _dataContext.LocationProperties
+                .Include(l => l.SafetyRating)
+                .FirstOrDefaultAsync(l => l.LocationId == locationId);
+
+            return location?.SafetyRating.Any(rating => rating.UserId == userId) ?? false;
         }
 
         private async Task<CommentModel> GetCommentsByCommentId(int Id)

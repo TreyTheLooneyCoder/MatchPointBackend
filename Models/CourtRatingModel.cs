@@ -9,7 +9,8 @@ namespace MatchPointBackend.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        // public int LocationPropertiesId { get; set; }
+        public int LocationId { get; set; }
+        public int LocationPropertiesId { get; set; }
         public float CourtRating { get; set; }
     }
 }
