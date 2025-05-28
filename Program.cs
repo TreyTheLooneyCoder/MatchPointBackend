@@ -18,7 +18,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<LocationServices>();
 
 
-var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
+var connectionString = builder.Configuration.GetConnectionString("DB:ConnectionString");
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddSingleton<BlobServices>();
