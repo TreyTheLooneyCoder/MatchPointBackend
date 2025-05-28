@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250528044240_Init")]
+    [Migration("20250528060313_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -69,6 +69,12 @@ namespace MatchPointBackend.Migrations
                     b.Property<float>("CourtRating")
                         .HasColumnType("real");
 
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationPropertiesId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("LocationPropertiesModelId")
                         .HasColumnType("int");
 
@@ -79,7 +85,7 @@ namespace MatchPointBackend.Migrations
 
                     b.HasIndex("LocationPropertiesModelId");
 
-                    b.ToTable("CourtRatingModel");
+                    b.ToTable("CourtRatings");
                 });
 
             modelBuilder.Entity("MatchPointBackend.Models.LocationCollectionModel", b =>
@@ -196,6 +202,12 @@ namespace MatchPointBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationPropertiesId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("LocationPropertiesModelId")
                         .HasColumnType("int");
 
@@ -209,7 +221,7 @@ namespace MatchPointBackend.Migrations
 
                     b.HasIndex("LocationPropertiesModelId");
 
-                    b.ToTable("SafetyRatingModel");
+                    b.ToTable("SafetyRatings");
                 });
 
             modelBuilder.Entity("MatchPointBackend.Models.UserModel", b =>

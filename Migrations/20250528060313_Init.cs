@@ -98,20 +98,22 @@ namespace MatchPointBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourtRatingModel",
+                name: "CourtRatings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    LocationPropertiesId = table.Column<int>(type: "int", nullable: false),
                     CourtRating = table.Column<float>(type: "real", nullable: false),
                     LocationPropertiesModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourtRatingModel", x => x.Id);
+                    table.PrimaryKey("PK_CourtRatings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CourtRatingModel_LocationProperties_LocationPropertiesModelId",
+                        name: "FK_CourtRatings_LocationProperties_LocationPropertiesModelId",
                         column: x => x.LocationPropertiesModelId,
                         principalTable: "LocationProperties",
                         principalColumn: "Id");
@@ -150,20 +152,22 @@ namespace MatchPointBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SafetyRatingModel",
+                name: "SafetyRatings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    LocationPropertiesId = table.Column<int>(type: "int", nullable: false),
                     SafetyRating = table.Column<float>(type: "real", nullable: false),
                     LocationPropertiesModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SafetyRatingModel", x => x.Id);
+                    table.PrimaryKey("PK_SafetyRatings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SafetyRatingModel_LocationProperties_LocationPropertiesModelId",
+                        name: "FK_SafetyRatings_LocationProperties_LocationPropertiesModelId",
                         column: x => x.LocationPropertiesModelId,
                         principalTable: "LocationProperties",
                         principalColumn: "Id");
@@ -175,8 +179,8 @@ namespace MatchPointBackend.Migrations
                 column: "LocationPropertiesModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourtRatingModel_LocationPropertiesModelId",
-                table: "CourtRatingModel",
+                name: "IX_CourtRatings_LocationPropertiesModelId",
+                table: "CourtRatings",
                 column: "LocationPropertiesModelId");
 
             migrationBuilder.CreateIndex(
@@ -195,8 +199,8 @@ namespace MatchPointBackend.Migrations
                 column: "PropertiesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SafetyRatingModel_LocationPropertiesModelId",
-                table: "SafetyRatingModel",
+                name: "IX_SafetyRatings_LocationPropertiesModelId",
+                table: "SafetyRatings",
                 column: "LocationPropertiesModelId");
         }
 
@@ -207,13 +211,13 @@ namespace MatchPointBackend.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "CourtRatingModel");
+                name: "CourtRatings");
 
             migrationBuilder.DropTable(
                 name: "Locations");
 
             migrationBuilder.DropTable(
-                name: "SafetyRatingModel");
+                name: "SafetyRatings");
 
             migrationBuilder.DropTable(
                 name: "Users");
