@@ -11,7 +11,9 @@ namespace MatchPointBackend.Models
         public int LocationId { get; set; }
         public string? CourtName { get; set; }
         public ICollection<CourtRatingModel>? CourtRating { get; set; }
+        public double? AverageCourtRating { get; set; }
         public ICollection<SafetyRatingModel>? SafetyRating { get; set; }
+        public double? AverageSafetyRating { get; set; }
         public List<string>? Conditions { get; set; }
         public List<string>? Amenities { get; set; }
         public ICollection<CommentModel>? Comments { get; set; }

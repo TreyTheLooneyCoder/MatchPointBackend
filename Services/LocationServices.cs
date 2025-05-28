@@ -168,8 +168,8 @@ namespace MatchPointBackend.Services
             LocationPropertiesModel locationToEdit = await GetLocationPropertiesByLocationId(ratings.LocationId);
             SafetyRatingModel safetyRatingToEdit = new();
 
-            if (locationToEdit == null) return false;
-
+            if (await DoesUserSafetyRatingExist(ratings.UserId, ratings.LocationId)) return false;
+            if(locationToEdit == null) return false;
 
             safetyRatingToEdit.UserId = ratings.UserId;
             safetyRatingToEdit.SafetyRating = ratings.Rating;
@@ -177,6 +177,9 @@ namespace MatchPointBackend.Services
             safetyRatingToEdit.LocationId = ratings.LocationId;
 
             locationToEdit.SafetyRating.Add(safetyRatingToEdit);
+
+            double calcAvg = locationToEdit.SafetyRating.Average(rating => rating.SafetyRating);
+            locationToEdit.AverageSafetyRating = calcAvg;
             
             return await _dataContext.SaveChangesAsync() != 0;
         }
@@ -186,6 +189,7 @@ namespace MatchPointBackend.Services
             LocationPropertiesModel locationToEdit = await GetLocationPropertiesByLocationId(ratings.LocationId);
             CourtRatingModel courtRatingToEdit = new();
         
+            if(await DoesUserCourtRatingExist(ratings.UserId, ratings.LocationId)) return false;
             if(locationToEdit == null) return false;
 
             courtRatingToEdit.UserId = ratings.UserId;
@@ -194,20 +198,13 @@ namespace MatchPointBackend.Services
             courtRatingToEdit.LocationId = ratings.LocationId;
 
             locationToEdit.CourtRating.Add(courtRatingToEdit);
-            
 
             _dataContext.LocationProperties.Update(locationToEdit);
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
-        private async Task<bool> DoesUserSafetyRatingExist(int userId, int locationId)
-        {
-            var location = await _dataContext.LocationProperties
-                .Include(l => l.SafetyRating)
-                .FirstOrDefaultAsync(l => l.LocationId == locationId);
-
-            return location?.SafetyRating.Any(rating => rating.UserId == userId) ?? false;
-        }
+        private async Task<bool> DoesUserSafetyRatingExist(int userId, int locationId) => await _dataContext.SafetyRatings.AnyAsync(rating => rating.UserId == userId && rating.LocationId == locationId);
+        private async Task<bool> DoesUserCourtRatingExist(int userId, int locationId) => await _dataContext.CourtRatings.AnyAsync(rating => rating.UserId == userId && rating.LocationId == locationId);
 
         private async Task<CommentModel> GetCommentsByCommentId(int Id)
         {
