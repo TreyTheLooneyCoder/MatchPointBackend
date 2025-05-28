@@ -199,6 +199,9 @@ namespace MatchPointBackend.Services
 
             locationToEdit.CourtRating.Add(courtRatingToEdit);
 
+            double calcAvg = locationToEdit.SafetyRating.Average(rating => rating.SafetyRating);
+            locationToEdit.AverageSafetyRating = calcAvg;
+
             _dataContext.LocationProperties.Update(locationToEdit);
             return await _dataContext.SaveChangesAsync() != 0;
         }
