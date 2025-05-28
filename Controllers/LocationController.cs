@@ -30,7 +30,7 @@ namespace MatchPointBackend.Controllers
         }
 
         [HttpPost("AddNewLocation")]
-        // [Authorize]
+        [Authorize]
         public async Task<IActionResult> AddLocation(AddLocationDTO location)
         {
             bool success = await _locationServices.AddLocation(location);
@@ -132,7 +132,7 @@ namespace MatchPointBackend.Controllers
 
         [HttpPost]
         [Route("AddCourtRating")]
-        // [Authorize]
+        [Authorize]
         public async Task<IActionResult> AddCourtRating(RatingDTO ratings)
         {
             bool success = await _locationServices.AddCourtRating(ratings);
@@ -142,7 +142,7 @@ namespace MatchPointBackend.Controllers
 
         [HttpPost]
         [Route("AddSafetyRating")]
-        // [Authorize]
+        [Authorize]
         public async Task<IActionResult> AddSafetyRating(RatingDTO ratings)
         {
             bool success = await _locationServices.AddSafetyRating(ratings);
