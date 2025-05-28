@@ -46,6 +46,8 @@ namespace MatchPointBackend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LocationId = table.Column<int>(type: "int", nullable: false),
                     CourtName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AverageCourtRating = table.Column<double>(type: "float", nullable: true),
+                    AverageSafetyRating = table.Column<double>(type: "float", nullable: true),
                     Conditions = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amenities = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Surface = table.Column<string>(type: "nvarchar(max)", nullable: true),

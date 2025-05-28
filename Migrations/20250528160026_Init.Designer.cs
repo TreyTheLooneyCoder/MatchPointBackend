@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250528060313_Init")]
+    [Migration("20250528160026_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -136,6 +136,12 @@ namespace MatchPointBackend.Migrations
 
                     b.Property<string>("Amenities")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("AverageCourtRating")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("AverageSafetyRating")
+                        .HasColumnType("float");
 
                     b.Property<string>("Conditions")
                         .HasColumnType("nvarchar(max)");
