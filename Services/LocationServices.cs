@@ -6,6 +6,7 @@ using MatchPointBackend.Context;
 using MatchPointBackend.Models;
 using MatchPointBackend.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MatchPointBackend.Services
 {
@@ -86,14 +87,22 @@ namespace MatchPointBackend.Services
 
         public async Task<LocationsModel> GetLocationById(int Id)
         {
-            var currentLocation = await _dataContext.Locations.SingleOrDefaultAsync(location => location.Id == Id);
+            var currentLocation = await _dataContext.Locations
+            .Include(location => location.Geometry)
+            .Include(location => location.Properties)
+            .SingleOrDefaultAsync(location => location.Id == Id);
+
             
             return currentLocation;
         }
 
         public async Task<LocationPropertiesModel> GetLocationPropertiesByLocationId(int Id)
         {
-            var currentLocation = await _dataContext.LocationPropeties.SingleOrDefaultAsync(properties => properties.LocationId == Id);
+            var currentLocation = await _dataContext.LocationProperties
+            .Include(ratings => ratings.SafetyRating)
+            .Include(ratings => ratings.SafetyRating)
+            .Include(comments => comments.Comments)
+            .SingleOrDefaultAsync(properties => properties.Id == Id);
 
             return currentLocation;
         }
@@ -151,16 +160,20 @@ namespace MatchPointBackend.Services
 
             SafetyRatingModel safetyRatingToEdit = new();
 
+            var exists = await _dataContext.LocationProperties
+    .AnyAsync(properties => properties.LocationId == ratings.LocationId);
+
+Console.WriteLine($"Location Exists: {exists}");
+
             if (locationToEdit == null)
             {
-                Console.WriteLine("Location to edit is broken");
                 return false;
             }
-            
+            Console.WriteLine("this happened");
 
             safetyRatingToEdit.UserId = ratings.UserId;
             safetyRatingToEdit.SafetyRating = ratings.Rating;
-            // safetyRatingToEdit.LocationPropertiesId = ratings.LocationId;
+
 
             locationToEdit.SafetyRating.Add(safetyRatingToEdit);
             
@@ -180,7 +193,7 @@ namespace MatchPointBackend.Services
             locationToEdit.CourtRating.Add(courtRatingToEdit);
             
 
-            _dataContext.LocationPropeties.Update(locationToEdit);
+            _dataContext.LocationProperties.Update(locationToEdit);
             return await _dataContext.SaveChangesAsync() != 0;
         }
 

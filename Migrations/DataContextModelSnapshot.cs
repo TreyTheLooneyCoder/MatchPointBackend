@@ -148,7 +148,7 @@ namespace MatchPointBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LocationPropeties");
+                    b.ToTable("LocationProperties");
                 });
 
             modelBuilder.Entity("MatchPointBackend.Models.LocationsModel", b =>

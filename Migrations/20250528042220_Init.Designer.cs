@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatchPointBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250527213105_Init")]
+    [Migration("20250528042220_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -151,7 +151,7 @@ namespace MatchPointBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LocationPropeties");
+                    b.ToTable("LocationProperties");
                 });
 
             modelBuilder.Entity("MatchPointBackend.Models.LocationsModel", b =>

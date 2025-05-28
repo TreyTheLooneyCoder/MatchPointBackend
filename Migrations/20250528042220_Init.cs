@@ -39,7 +39,7 @@ namespace MatchPointBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LocationPropeties",
+                name: "LocationProperties",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -54,7 +54,7 @@ namespace MatchPointBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LocationPropeties", x => x.Id);
+                    table.PrimaryKey("PK_LocationProperties", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,9 +91,9 @@ namespace MatchPointBackend.Migrations
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_LocationPropeties_LocationPropertiesModelId",
+                        name: "FK_Comments_LocationProperties_LocationPropertiesModelId",
                         column: x => x.LocationPropertiesModelId,
-                        principalTable: "LocationPropeties",
+                        principalTable: "LocationProperties",
                         principalColumn: "Id");
                 });
 
@@ -111,9 +111,9 @@ namespace MatchPointBackend.Migrations
                 {
                     table.PrimaryKey("PK_CourtRatingModel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CourtRatingModel_LocationPropeties_LocationPropertiesModelId",
+                        name: "FK_CourtRatingModel_LocationProperties_LocationPropertiesModelId",
                         column: x => x.LocationPropertiesModelId,
-                        principalTable: "LocationPropeties",
+                        principalTable: "LocationProperties",
                         principalColumn: "Id");
                 });
 
@@ -143,9 +143,9 @@ namespace MatchPointBackend.Migrations
                         principalTable: "LocationGeometry",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Locations_LocationPropeties_PropertiesId",
+                        name: "FK_Locations_LocationProperties_PropertiesId",
                         column: x => x.PropertiesId,
-                        principalTable: "LocationPropeties",
+                        principalTable: "LocationProperties",
                         principalColumn: "Id");
                 });
 
@@ -163,9 +163,9 @@ namespace MatchPointBackend.Migrations
                 {
                     table.PrimaryKey("PK_SafetyRatingModel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SafetyRatingModel_LocationPropeties_LocationPropertiesModelId",
+                        name: "FK_SafetyRatingModel_LocationProperties_LocationPropertiesModelId",
                         column: x => x.LocationPropertiesModelId,
-                        principalTable: "LocationPropeties",
+                        principalTable: "LocationProperties",
                         principalColumn: "Id");
                 });
 
@@ -225,7 +225,7 @@ namespace MatchPointBackend.Migrations
                 name: "LocationGeometry");
 
             migrationBuilder.DropTable(
-                name: "LocationPropeties");
+                name: "LocationProperties");
         }
     }
 }
