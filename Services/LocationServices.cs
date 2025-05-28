@@ -100,7 +100,7 @@ namespace MatchPointBackend.Services
         {
             var currentLocation = await _dataContext.LocationProperties
             .Include(ratings => ratings.SafetyRating)
-            .Include(ratings => ratings.SafetyRating)
+            .Include(ratings => ratings.CourtRating)
             .Include(comments => comments.Comments)
             .SingleOrDefaultAsync(properties => properties.Id == Id);
 
@@ -160,16 +160,9 @@ namespace MatchPointBackend.Services
 
             SafetyRatingModel safetyRatingToEdit = new();
 
-            var exists = await _dataContext.LocationProperties
-    .AnyAsync(properties => properties.LocationId == ratings.LocationId);
 
-Console.WriteLine($"Location Exists: {exists}");
+            if (locationToEdit == null) return false;
 
-            if (locationToEdit == null)
-            {
-                return false;
-            }
-            Console.WriteLine("this happened");
 
             safetyRatingToEdit.UserId = ratings.UserId;
             safetyRatingToEdit.SafetyRating = ratings.Rating;

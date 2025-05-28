@@ -30,7 +30,7 @@ namespace MatchPointBackend.Controllers
         }
 
         [HttpPost("AddNewLocation")]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> AddLocation(AddLocationDTO location)
         {
             bool success = await _locationServices.AddLocation(location);
