@@ -66,6 +66,7 @@ namespace MatchPointBackend.Services
             newPropeties.Amenities = newLocation.Amenities;
             newPropeties.isDeleted = false;
             newPropeties.Surface = newLocation.Surface;
+            newPropeties.Images = newLocation.Image;
 
             locationToAdd.Type = "Feature";
             locationToAdd.Properties = newPropeties;
