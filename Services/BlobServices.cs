@@ -28,6 +28,7 @@ namespace MatchPointBackend.Services
             var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
             
             var blobClient = containerClient.GetBlobClient(fileName);
+            await containerClient.CreateIfNotExistsAsync();
 						
 						//If the File name Exists we will have to overwrite it 
             await blobClient.UploadAsync(fileStream, overwrite: true);
